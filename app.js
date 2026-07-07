@@ -1,16 +1,26 @@
-/* app.js — grid, filters, search, player, copy-link and add-film wiring. */
+/* app.js — grid, filters (Sector/Type/Client), player, copy-link, scan & edit. */
 (function () {
   "use strict";
 
   const $ = (sel) => document.querySelector(sel);
 
+  // Filter groups. `field` is the film property; `client` is a single string,
+  // sectors/videoTypes are arrays — valuesOf() normalises both to a list.
+  const FILTER_GROUPS = [
+    { key: "sectors", field: "sectors", chips: "#filter-sector .chips" },
+    { key: "videoTypes", field: "videoTypes", chips: "#filter-type .chips" },
+    { key: "clients", field: "client", chips: "#filter-client .chips" },
+  ];
+  const valuesOf = (f, field) =>
+    Array.isArray(f[field]) ? f[field] : f[field] ? [f[field]] : [];
+
   const state = {
     films: [],
-    selected: { sectors: new Set(), videoTypes: new Set() },
+    selected: { sectors: new Set(), videoTypes: new Set(), clients: new Set() },
     search: "",
   };
 
-  // A film can carry several sectors / types. Does any of its values match the set?
+  // Does any of a film's values for a group match the selected set?
   const anyMatch = (values, set) =>
     (values || []).some((v) => set.has(LCF.canonKey(v)));
 
@@ -36,11 +46,11 @@
   }
 
   // Distinct values for a field, folding case/spacing variants into one canonical
-  // label (the first-seen spelling wins, so e.g. "healthcare" shows as "Healthcare").
+  // label (first-seen spelling wins). Works for array fields and single strings.
   function distinct(field) {
-    const byKey = new Map(); // canonKey -> display label
+    const byKey = new Map();
     state.films.forEach((f) => {
-      (f[field] || []).forEach((raw) => {
+      valuesOf(f, field).forEach((raw) => {
         const v = (raw || "").trim().replace(/\s+/g, " ");
         if (!v) return;
         const key = LCF.canonKey(v);
@@ -58,62 +68,58 @@
     return distinct(field).find((d) => LCF.canonKey(d) === key) || v;
   }
 
+  const matchesSearch = (f) =>
+    !state.search ||
+    (f.client + " " + f.film + " " + (f.title || ""))
+      .toLowerCase()
+      .includes(state.search);
+
   // ---- filtering ----------------------------------------------------------------
   function matches(f) {
-    const sec = state.selected.sectors;
-    const typ = state.selected.videoTypes;
-    if (sec.size && !anyMatch(f.sectors, sec)) return false;
-    if (typ.size && !anyMatch(f.videoTypes, typ)) return false;
-    if (state.search) {
-      const hay = (f.client + " " + f.film + " " + (f.title || "")).toLowerCase();
-      if (!hay.includes(state.search)) return false;
+    for (const g of FILTER_GROUPS) {
+      const set = state.selected[g.key];
+      if (set.size && !anyMatch(valuesOf(f, g.field), set)) return false;
     }
-    return true;
+    return matchesSearch(f);
   }
 
-  function filtered() {
-    return state.films.filter(matches);
-  }
+  const filtered = () => state.films.filter(matches);
 
-  // Count how many films a given chip would yield, respecting OTHER active filters
-  // (so the numbers reflect what you'd actually get if you toggled it on).
-  function chipCount(group, value) {
+  // Count films a chip would yield, respecting the OTHER groups' filters + search.
+  function chipCount(groupKey, value) {
+    const grp = FILTER_GROUPS.find((g) => g.key === groupKey);
     const want = LCF.canonKey(value);
     return state.films.filter((f) => {
-      // apply the cross-group filters + search, but for THIS group force the value
-      const sec = group === "sectors" ? null : state.selected.sectors;
-      const typ = group === "videoTypes" ? null : state.selected.videoTypes;
-      if (sec && sec.size && !anyMatch(f.sectors, sec)) return false;
-      if (typ && typ.size && !anyMatch(f.videoTypes, typ)) return false;
-      if (state.search) {
-        const hay = (f.client + " " + f.film + " " + (f.title || "")).toLowerCase();
-        if (!hay.includes(state.search)) return false;
+      for (const g of FILTER_GROUPS) {
+        if (g.key === groupKey) continue; // this group forced to `value`
+        const set = state.selected[g.key];
+        if (set.size && !anyMatch(valuesOf(f, g.field), set)) return false;
       }
-      return (f[group] || []).some((v) => LCF.canonKey(v) === want);
+      if (!matchesSearch(f)) return false;
+      return valuesOf(f, grp.field).some((v) => LCF.canonKey(v) === want);
     }).length;
   }
 
   // ---- rendering ----------------------------------------------------------------
   function renderChips() {
-    [["sectors", "#filter-sector .chips"], ["videoTypes", "#filter-type .chips"]].forEach(
-      ([group, sel]) => {
-        const box = $(sel);
-        box.innerHTML = "";
-        distinct(group).forEach((value) => {
-          const key = LCF.canonKey(value);
-          const n = chipCount(group, value);
-          const chip = document.createElement("button");
-          chip.className = "chip" + (state.selected[group].has(key) ? " active" : "");
-          chip.innerHTML = esc(value) + '<span class="chip-n">' + n + "</span>";
-          chip.addEventListener("click", () => {
-            const set = state.selected[group];
-            set.has(key) ? set.delete(key) : set.add(key);
-            render();
-          });
-          box.appendChild(chip);
+    FILTER_GROUPS.forEach((g) => {
+      const box = $(g.chips);
+      if (!box) return;
+      box.innerHTML = "";
+      distinct(g.field).forEach((value) => {
+        const key = LCF.canonKey(value);
+        const n = chipCount(g.key, value);
+        const chip = document.createElement("button");
+        chip.className = "chip" + (state.selected[g.key].has(key) ? " active" : "");
+        chip.innerHTML = esc(value) + '<span class="chip-n">' + n + "</span>";
+        chip.addEventListener("click", () => {
+          const set = state.selected[g.key];
+          set.has(key) ? set.delete(key) : set.add(key);
+          render();
         });
-      }
-    );
+        box.appendChild(chip);
+      });
+    });
   }
 
   function renderGrid() {
@@ -121,7 +127,7 @@
     const grid = $("#grid");
     grid.innerHTML = "";
 
-    list.forEach((f, i) => {
+    list.forEach((f) => {
       const card = document.createElement("div");
       card.className = "card";
       const dur = fmtDuration(f.duration);
@@ -145,17 +151,16 @@
         "</div>";
       card.addEventListener("click", () => openPlayer(f));
       card.querySelector(".c-copy").addEventListener("click", (e) => {
-        e.stopPropagation(); // don't open the player
+        e.stopPropagation();
         copyLink(f.vimeoUrl);
       });
       grid.appendChild(card);
     });
 
     $("#empty").hidden = list.length !== 0;
-    $("#count").textContent =
-      "Showing " + list.length + " of " + state.films.length;
+    $("#count").textContent = "Showing " + list.length + " of " + state.films.length;
     const anyFilter =
-      state.selected.sectors.size || state.selected.videoTypes.size || state.search;
+      FILTER_GROUPS.some((g) => state.selected[g.key].size) || state.search;
     $("#clearBtn").hidden = !anyFilter;
   }
 
@@ -165,8 +170,7 @@
   }
 
   function clearFilters() {
-    state.selected.sectors.clear();
-    state.selected.videoTypes.clear();
+    FILTER_GROUPS.forEach((g) => state.selected[g.key].clear());
     state.search = "";
     $("#search").value = "";
     render();
@@ -185,39 +189,11 @@
     showModal("#playerModal");
   }
 
-  // Open the shared modal in "edit" mode, pre-filled with this film's details/tags.
-  function openEditor(f) {
-    pendingMeta = null;
-    scanQueue = [];
-    editingId = f.id;
-    $("#skipFilm").hidden = true;
-    $("#addTitle").textContent = "Edit film";
-    $("#addUrlField").hidden = true; // link can't change; hide the fetch row
-    $("#addModeHint").textContent = "Update details or tags — saves for everyone.";
-    addSel.sectors = new Set(f.sectors || []);
-    addSel.videoTypes = new Set(f.videoTypes || []);
-    renderPick("sectors", "#pickSector");
-    renderPick("videoTypes", "#pickType");
-    $("#newSector").value = "";
-    $("#newType").value = "";
-    $("#addThumb").src = f.thumbnail || "";
-    $("#addThumb").style.visibility = f.thumbnail ? "visible" : "hidden";
-    $("#addClient").value = f.client || "";
-    $("#addFilm").value = f.film || "";
-    $("#addPreview").hidden = false;
-    $("#addError").hidden = true;
-    $("#saveFilm").disabled = false;
-    $("#saveFilm").textContent = "Save changes";
-    hideModal("#playerModal");
-    showModal("#addModal");
-  }
-
   async function copyLink(url) {
     try {
       await navigator.clipboard.writeText(url);
       toast("Private link copied");
     } catch (_) {
-      // Fallback for non-secure contexts
       const ta = document.createElement("textarea");
       ta.value = url;
       document.body.appendChild(ta);
@@ -228,46 +204,16 @@
     }
   }
 
-  // ---- add-film modal -----------------------------------------------------------
+  // ---- add / scan / edit modal ---------------------------------------------------
   let pendingMeta = null;
-  let scanQueue = []; // films found by "Scan Vimeo", reviewed one at a time
+  let scanQueue = [];
   let scanIdx = 0;
-  let editingId = null; // set when the modal is editing an existing film
+  let editingId = null;
+  let editingFilm = null;
 
-  // Put the shared add/edit modal back into "add a new film" mode.
-  function resetModalToAdd() {
-    editingId = null;
-    $("#addTitle").textContent = "Add a film";
-    $("#addUrlField").hidden = false;
-    $("#saveFilm").textContent = "Save film";
-  }
-
-  function openAdd() {
-    pendingMeta = null;
-    scanQueue = []; // manual add — leave scan mode
-    resetModalToAdd();
-    $("#skipFilm").hidden = true;
-    $("#addUrl").value = "";
-    $("#addPreview").hidden = true;
-    $("#addError").hidden = true;
-    $("#saveFilm").disabled = true;
-    // Multi-select chip pickers, built from the existing values (+ add-your-own).
-    addSel.sectors.clear();
-    addSel.videoTypes.clear();
-    renderPick("sectors", "#pickSector");
-    renderPick("videoTypes", "#pickType");
-    $("#newSector").value = "";
-    $("#newType").value = "";
-    $("#addModeHint").textContent = LCF.hasSupabase()
-      ? "Saved films appear instantly for everyone."
-      : "Preview mode: films you add are saved on this browser only" +
-        (LCF.localCount() ? " (" + LCF.localCount() + " staged)." : ".");
-    showModal("#addModal");
-    setTimeout(() => $("#addUrl").focus(), 50);
-  }
-
-  // Multi-select state for the add form (Sets of canonical display labels).
+  // Multi-select pickers (sectors/types) + single-select client.
   const addSel = { sectors: new Set(), videoTypes: new Set() };
+  let addClientVal = "";
 
   const inSel = (group, value) => {
     const k = LCF.canonKey(value);
@@ -280,7 +226,7 @@
     addSel[group].add(value);
   }
 
-  // Render the toggle-chip picker: existing values plus any custom ones you've added.
+  // Multi-select toggle-chip picker (sectors / videoTypes).
   function renderPick(group, containerSel) {
     const box = $(containerSel);
     box.innerHTML = "";
@@ -304,7 +250,56 @@
       });
   }
 
-  // ---- Scan Vimeo -----------------------------------------------------------------
+  function addCustom(group, inputSel, containerSel) {
+    const v = canonicalize(group, $(inputSel).value);
+    if (!v) return;
+    if (!inSel(group, v)) toggleSel(group, v);
+    $(inputSel).value = "";
+    renderPick(group, containerSel);
+  }
+
+  // Single-select client chip picker (existing clients + add-new → no duplicates).
+  function renderClientPick() {
+    const box = $("#pickClient");
+    box.innerHTML = "";
+    const byKey = new Map();
+    distinct("client").forEach((v) => byKey.set(LCF.canonKey(v), v));
+    if (addClientVal && !byKey.has(LCF.canonKey(addClientVal)))
+      byKey.set(LCF.canonKey(addClientVal), addClientVal);
+    [...byKey.values()]
+      .sort((a, b) => a.localeCompare(b))
+      .forEach((value) => {
+        const active = LCF.canonKey(value) === LCF.canonKey(addClientVal);
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "chip" + (active ? " active" : "");
+        chip.textContent = value;
+        chip.addEventListener("click", () => {
+          addClientVal = active ? "" : value; // single-select toggle
+          renderClientPick();
+        });
+        box.appendChild(chip);
+      });
+  }
+
+  function addClientCustom() {
+    const v = canonicalize("client", $("#newClient").value);
+    if (!v) return;
+    addClientVal = v;
+    $("#newClient").value = "";
+    renderClientPick();
+  }
+
+  // Reset shared modal to "add" mode (used by the scan flow).
+  function resetModalToAdd() {
+    editingId = null;
+    editingFilm = null;
+    $("#addTitle").textContent = "Add a film";
+    $("#saveFilm").textContent = "Save film";
+    $("#refreshThumb").hidden = true;
+  }
+
+  // ---- Scan Vimeo ----------------------------------------------------------------
   async function runScan() {
     const btn = $("#scanBtn");
     const orig = btn.textContent;
@@ -327,24 +322,24 @@
     }
   }
 
-  // Load the current scan-queue film into the add form (no fetch needed — we have its meta).
   function openAddForScan() {
     const f = scanQueue[scanIdx];
-    resetModalToAdd(); // scanned films are new adds, not edits
+    resetModalToAdd();
     pendingMeta = {
       id: f.id, hash: f.hash, vimeoUrl: f.vimeoUrl, playerUrl: f.playerUrl,
       title: f.title, thumbnail: f.thumbnail, duration: f.duration,
     };
     addSel.sectors.clear();
     addSel.videoTypes.clear();
+    addClientVal = "";
     renderPick("sectors", "#pickSector");
     renderPick("videoTypes", "#pickType");
+    renderClientPick();
     $("#newSector").value = "";
     $("#newType").value = "";
-    $("#addUrl").value = f.vimeoUrl;
+    $("#newClient").value = "";
     $("#addThumb").src = f.thumbnail || "";
     $("#addThumb").style.visibility = f.thumbnail ? "visible" : "hidden";
-    $("#addClient").value = "";
     $("#addFilm").value = f.title || "";
     $("#addPreview").hidden = false;
     $("#addError").hidden = true;
@@ -356,7 +351,6 @@
     showModal("#addModal");
   }
 
-  // Move to the next queued film; returns false when the queue is exhausted.
   function advanceScan() {
     if (scanIdx < scanQueue.length - 1) {
       scanIdx++;
@@ -374,46 +368,69 @@
     }
   }
 
-  // "Add your own" — snaps onto an existing spelling if it matches, then selects it.
-  function addCustom(group, inputSel, containerSel) {
-    const v = canonicalize(group, $(inputSel).value);
-    if (!v) return;
-    if (!inSel(group, v)) toggleSel(group, v);
-    $(inputSel).value = "";
-    renderPick(group, containerSel);
+  // ---- edit existing film --------------------------------------------------------
+  function openEditor(f) {
+    pendingMeta = null;
+    scanQueue = [];
+    editingId = f.id;
+    editingFilm = f;
+    $("#skipFilm").hidden = true;
+    $("#addTitle").textContent = "Edit film";
+    $("#addModeHint").textContent = "Update details or tags — saves for everyone.";
+    addSel.sectors = new Set(f.sectors || []);
+    addSel.videoTypes = new Set(f.videoTypes || []);
+    addClientVal = f.client || "";
+    renderPick("sectors", "#pickSector");
+    renderPick("videoTypes", "#pickType");
+    renderClientPick();
+    $("#newSector").value = "";
+    $("#newType").value = "";
+    $("#newClient").value = "";
+    $("#addThumb").src = f.thumbnail || "";
+    $("#addThumb").style.visibility = f.thumbnail ? "visible" : "hidden";
+    $("#addFilm").value = f.film || "";
+    $("#addPreview").hidden = false;
+    $("#addError").hidden = true;
+    $("#saveFilm").disabled = false;
+    $("#saveFilm").textContent = "Save changes";
+    $("#refreshThumb").hidden = false;
+    hideModal("#playerModal");
+    showModal("#addModal");
   }
 
-  async function fetchMeta() {
-    const url = $("#addUrl").value.trim();
-    if (!url) return;
-    $("#addError").hidden = true;
-    $("#fetchMeta").textContent = "…";
+  // Re-pull the current thumbnail from Vimeo (fixes a still-processing blank frame).
+  async function refreshThumbnail() {
+    if (!editingFilm) return;
+    const btn = $("#refreshThumb");
+    const orig = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = "Refreshing…";
     try {
-      const meta = await LCF.fetchVimeoMeta(url);
-      pendingMeta = meta;
-      $("#addThumb").src = meta.thumbnail || "";
-      $("#addThumb").style.visibility = meta.thumbnail ? "visible" : "hidden";
-      $("#addClient").value = "";
-      $("#addFilm").value = meta.title || "";
-      $("#addPreview").hidden = false;
-      $("#saveFilm").disabled = false;
+      const meta = await LCF.fetchVimeoMeta(editingFilm.vimeoUrl);
+      if (!meta.thumbnail)
+        throw new Error("No thumbnail yet — Vimeo may still be processing.");
+      await LCF.updateFilm(editingFilm.id, { thumbnail: meta.thumbnail });
+      editingFilm.thumbnail = meta.thumbnail;
+      $("#addThumb").src = meta.thumbnail;
+      $("#addThumb").style.visibility = "visible";
+      state.films = await LCF.loadFilms();
+      render();
+      toast("Thumbnail refreshed");
     } catch (e) {
-      pendingMeta = null;
-      $("#addError").textContent = e.message;
-      $("#addError").hidden = false;
-      $("#addPreview").hidden = true;
-      $("#saveFilm").disabled = true;
+      toast("Refresh failed: " + (e && e.message ? e.message : e));
     } finally {
-      $("#fetchMeta").textContent = "Fetch";
+      btn.disabled = false;
+      btn.textContent = orig;
     }
   }
 
+  // ---- save (add via scan, or edit) ----------------------------------------------
   async function saveFilm() {
     if (!pendingMeta && !editingId) return;
     $("#addError").hidden = true;
     $("#saveFilm").disabled = true;
     try {
-      const client = $("#addClient").value.trim();
+      const client = addClientVal.trim();
       const film = $("#addFilm").value.trim();
       const sectors = [...addSel.sectors];
       const videoTypes = [...addSel.videoTypes];
@@ -444,7 +461,6 @@
       state.films = await LCF.loadFilms();
       render();
       if (scanQueue.length) {
-        // reviewing scanned films — go to the next one, or finish
         if (advanceScan()) {
           toast("Added — next new film");
           return;
@@ -462,7 +478,7 @@
     }
   }
 
-  // ---- modal plumbing -----------------------------------------------------------
+  // ---- modal plumbing ------------------------------------------------------------
   function showModal(sel) {
     $(sel).hidden = false;
     document.body.style.overflow = "hidden";
@@ -470,7 +486,7 @@
   function hideModal(sel) {
     $(sel).hidden = true;
     document.body.style.overflow = "";
-    if (sel === "#playerModal") $("#playerFrame").innerHTML = ""; // stop playback
+    if (sel === "#playerModal") $("#playerFrame").innerHTML = "";
   }
   function wireModalClose(sel) {
     $(sel).querySelectorAll("[data-close]").forEach((el) =>
@@ -478,9 +494,8 @@
     );
   }
 
-  // ---- init ---------------------------------------------------------------------
+  // ---- init ----------------------------------------------------------------------
   async function init() {
-    // Never fail silently again — surface any uncaught error to the user.
     window.addEventListener("error", (e) => toast("Error: " + e.message));
     window.addEventListener("unhandledrejection", (e) =>
       toast("Error: " + ((e.reason && e.reason.message) || e.reason))
@@ -488,26 +503,28 @@
 
     wireModalClose("#playerModal");
     wireModalClose("#addModal");
-    $("#addBtn").addEventListener("click", openAdd);
     $("#scanBtn").addEventListener("click", runScan);
     $("#skipFilm").addEventListener("click", skipScan);
-    $("#fetchMeta").addEventListener("click", fetchMeta);
-    $("#addUrl").addEventListener("keydown", (e) => {
-      if (e.key === "Enter") { e.preventDefault(); fetchMeta(); }
-    });
     $("#saveFilm").addEventListener("click", saveFilm);
+    $("#refreshThumb").addEventListener("click", refreshThumbnail);
+
     $("#addSectorBtn").addEventListener("click", () =>
       addCustom("sectors", "#newSector", "#pickSector")
     );
     $("#addTypeBtn").addEventListener("click", () =>
       addCustom("videoTypes", "#newType", "#pickType")
     );
+    $("#addClientBtn").addEventListener("click", addClientCustom);
     $("#newSector").addEventListener("keydown", (e) => {
       if (e.key === "Enter") { e.preventDefault(); addCustom("sectors", "#newSector", "#pickSector"); }
     });
     $("#newType").addEventListener("keydown", (e) => {
       if (e.key === "Enter") { e.preventDefault(); addCustom("videoTypes", "#newType", "#pickType"); }
     });
+    $("#newClient").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") { e.preventDefault(); addClientCustom(); }
+    });
+
     $("#clearBtn").addEventListener("click", clearFilters);
     $("#emptyClear").addEventListener("click", clearFilters);
     $("#search").addEventListener("input", (e) => {

@@ -21,8 +21,7 @@
           placeholder="Search client or film…"
           autocomplete="off"
         />
-        <button id="scanBtn" class="btn" title="Check Vimeo for films not yet in the library">⟳ Scan Vimeo</button>
-        <button id="addBtn" class="btn btn-primary">+ Add film</button>
+        <button id="scanBtn" class="btn btn-primary" title="Check Vimeo for films not yet in the library">⟳ Scan Vimeo</button>
       </div>
     </header>
 
@@ -34,6 +33,10 @@
       <div class="filter-group" id="filter-type">
         <span class="filter-label">Type</span>
         <div class="chips" data-group="videoType"></div>
+      </div>
+      <div class="filter-group" id="filter-client">
+        <span class="filter-label">Client</span>
+        <div class="chips" data-group="client"></div>
       </div>
       <div class="filter-meta">
         <span id="count" class="count"></span>
@@ -75,21 +78,17 @@
         <h2 class="add-title" id="addTitle">Add a film</h2>
         <p class="add-hint" id="addModeHint"></p>
 
-        <label class="field" id="addUrlField">
-          <span>Vimeo link</span>
-          <div class="field-row">
-            <input id="addUrl" type="url" placeholder="https://vimeo.com/123…/abc…" />
-            <button id="fetchMeta" class="btn">Fetch</button>
-          </div>
-        </label>
-
         <div id="addPreview" class="add-preview" hidden>
           <img id="addThumb" alt="" />
           <div class="add-fields">
-            <label class="field">
+            <div class="field">
               <span>Client</span>
-              <input id="addClient" type="text" />
-            </label>
+              <div class="pick" id="pickClient"></div>
+              <div class="field-row">
+                <input id="newClient" type="text" placeholder="Add a client…" />
+                <button type="button" id="addClientBtn" class="btn">Add</button>
+              </div>
+            </div>
             <label class="field">
               <span>Film</span>
               <input id="addFilm" type="text" />
@@ -116,6 +115,7 @@
         <p class="add-error" id="addError" hidden></p>
 
         <div class="add-actions">
+          <button id="refreshThumb" class="btn" hidden>↻ Refresh thumb</button>
           <button id="skipFilm" class="btn" hidden>Skip</button>
           <button id="saveFilm" class="btn btn-primary" disabled>Save film</button>
         </div>
@@ -125,6 +125,6 @@
     <div id="toast" class="toast" hidden></div>
 
     <script src="data.js?v=12"></script>
-    <script src="app.js?v=12"></script>
+    <script src="app.js?v=13"></script>
   </body>
 </html>
