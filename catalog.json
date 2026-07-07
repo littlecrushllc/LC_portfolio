@@ -1,0 +1,1405 @@
+{
+  "films": [
+    {
+      "id": "379639170",
+      "hash": null,
+      "client": "Little Crush Films",
+      "film": "Company Showreel",
+      "sectors": [],
+      "videoTypes": [],
+      "vimeoUrl": "https://vimeo.com/379639170",
+      "playerUrl": "https://player.vimeo.com/video/379639170",
+      "title": "Little Crush Films",
+      "thumbnail": "https://i.vimeocdn.com/video/2049852805-b49d7d63732ec84d5d25f32527063491a63dcfb66f01d97f79ed59c81ff26ab0-d_960?region=us",
+      "duration": 78
+    },
+    {
+      "id": "1129514781",
+      "hash": "501d875cf2",
+      "client": "Comulate",
+      "film": "Meet Comulate: Brand Film [60]",
+      "sectors": [
+        "Tech"
+      ],
+      "videoTypes": [
+        "Recruitment Film"
+      ],
+      "vimeoUrl": "https://vimeo.com/1129514781/501d875cf2?share=copy&fl=sv&fe=ci",
+      "playerUrl": "https://player.vimeo.com/video/1129514781?h=501d875cf2",
+      "title": "Comulate: Brand Story [60]",
+      "thumbnail": "https://i.vimeocdn.com/video/2072922388-f731e6ec3973503dc53d947e11f95145cb932bdb4e6834d15d901f2481ff778a-d_960?region=us",
+      "duration": 69
+    },
+    {
+      "id": "1129514347",
+      "hash": "9a3137d0c9",
+      "client": "Comulate",
+      "film": "Meet Comulate: Brand Film",
+      "sectors": [
+        "Tech"
+      ],
+      "videoTypes": [
+        "Recruitment Film"
+      ],
+      "vimeoUrl": "https://vimeo.com/1129514347/9a3137d0c9?share=copy&fl=sv&fe=ci",
+      "playerUrl": "https://player.vimeo.com/video/1129514347?h=9a3137d0c9",
+      "title": "Comulate: Brand Story",
+      "thumbnail": "https://i.vimeocdn.com/video/2072921814-5b29a2695473b0e5fcc3bcc19474c2e42e07455e24a9c756b10bbdf7f811549e-d_960?region=us",
+      "duration": 176
+    },
+    {
+      "id": "1129512805",
+      "hash": "02540c1347",
+      "client": "Comulate",
+      "film": "CAC Case Study (60)",
+      "sectors": [
+        "Tech"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1129512805/02540c1347?share=copy&fl=sv&fe=ci",
+      "playerUrl": "https://player.vimeo.com/video/1129512805?h=02540c1347",
+      "title": "Comulate: CAC Customer Feature [60]",
+      "thumbnail": "https://i.vimeocdn.com/video/2072919594-616a13aa0e3603a756473f9d156ccd3eb5c62b3ff093cce8ac380e9c8d0c3970-d_960?region=us",
+      "duration": 70
+    },
+    {
+      "id": "1129513431",
+      "hash": "af8bb0ee5e",
+      "client": "Comulate",
+      "film": "CAC Case Study",
+      "sectors": [
+        "Tech"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1129513431/af8bb0ee5e?share=copy&fl=sv&fe=ci",
+      "playerUrl": "https://player.vimeo.com/video/1129513431?h=af8bb0ee5e",
+      "title": "Comulate: CAC Customer Feature",
+      "thumbnail": "https://i.vimeocdn.com/video/2072920574-0f2a68869e322dff83961e79658bae664d03b93f29cc5d1e6664bd7773b3db12-d_960?region=us",
+      "duration": 231
+    },
+    {
+      "id": "1120843005",
+      "hash": "ec1910482a",
+      "client": "Abridge",
+      "film": "PX Value",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1120843005/ec1910482a?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1120843005?h=ec1910482a",
+      "title": "Abridge: Partnership is a Privilege",
+      "thumbnail": "https://i.vimeocdn.com/video/2061727429-bc5a6cbfde95be21dce7f5b299a3ee1334f3e9101ea3f6ceae7f386281070a3b-d_960?region=us",
+      "duration": 182
+    },
+    {
+      "id": "1120834440",
+      "hash": "259a4daa02",
+      "client": "Abridge",
+      "film": "Yale",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1120834440/259a4daa02?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1120834440?h=259a4daa02",
+      "title": "Abridge: Yale New Haven | Customer Feature",
+      "thumbnail": "https://i.vimeocdn.com/video/2061716244-454d553e62086083f76fd9b6446c15f99e2c7c31e7384fa35897ad82a9791b0d-d_960?region=us",
+      "duration": 169
+    },
+    {
+      "id": "1109102266",
+      "hash": "23fc3cbb63",
+      "client": "Abridge",
+      "film": "Vail CKO",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Event Coverage"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109102266/23fc3cbb63?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109102266?h=23fc3cbb63",
+      "title": "Abridge: Vail Basecamp",
+      "thumbnail": "https://i.vimeocdn.com/video/2046534973-e1ee64889bdb6634067d7e765f5ddb392b3fb1d7cc2d57372cbbabdf1e5563d8-d_960?region=us",
+      "duration": 248
+    },
+    {
+      "id": "1109104654",
+      "hash": "8c6b135411",
+      "client": "Abridge",
+      "film": "Altamed",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109104654/8c6b135411?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109104654?h=8c6b135411",
+      "title": "Abridge: Altamed",
+      "thumbnail": "https://i.vimeocdn.com/video/2046537859-04b9cd87b3fe1ece1388a986922a5692ca5f379aade30ebed15c312fd05fc639-d_960?region=us",
+      "duration": 218
+    },
+    {
+      "id": "1109104197",
+      "hash": "f7d408df6a",
+      "client": "Abridge",
+      "film": "Akron",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109104197/f7d408df6a?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109104197?h=f7d408df6a",
+      "title": "Abridge: Akron Children's Hospital",
+      "thumbnail": "https://i.vimeocdn.com/video/2046537273-15571b333fd733b1f69849c3fe19f374889ab902e1760c6a7661c50ae5af568c-d_960?region=us",
+      "duration": 159
+    },
+    {
+      "id": "1109103731",
+      "hash": "8570182339",
+      "client": "Abridge",
+      "film": "Mission Film",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109103731/8570182339?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109103731?h=8570182339",
+      "title": "Abridge: Mission Film",
+      "thumbnail": "https://i.vimeocdn.com/video/2046536527-180a7d56e32006197e28a1512612e311d9e873b14e5e01a04051110ed48b075d-d_960?region=us",
+      "duration": 194
+    },
+    {
+      "id": "1109100706",
+      "hash": "54f833b440",
+      "client": "Abridge",
+      "film": "CRE Films",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "SME"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109100706/54f833b440?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109100706?h=54f833b440",
+      "title": "ABRIDGE: CRE Film Series",
+      "thumbnail": "https://i.vimeocdn.com/video/2046533092-da044c74692dd66d9bb8259571f391c122a67058906a0699f47f0b6c87e7a550-d_960?region=us",
+      "duration": 224
+    },
+    {
+      "id": "1109101415",
+      "hash": "ad9774a2f6",
+      "client": "Abridge",
+      "film": "San Fran Community Experience",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Event Coverage"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109101415/ad9774a2f6?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109101415?h=ad9774a2f6",
+      "title": "Abridge: SF Community Meetup",
+      "thumbnail": "https://i.vimeocdn.com/video/2046534256-acc5abe3f4f19b688905af0f571ee0b23d9014de11dbfe4a156b7493b7530c7d-d_960?region=us",
+      "duration": 109
+    },
+    {
+      "id": "1109096734",
+      "hash": "07166a1537",
+      "client": "Abridge",
+      "film": "Love Stories",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109096734/07166a1537?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109096734?h=07166a1537",
+      "title": "Abridge: Love Stories",
+      "thumbnail": "https://i.vimeocdn.com/video/2046528663-90dc42eb7de43c2c148f3e6f2e9855d484674a961e0fff9bf8f9fac9ad8e994f-d_960?region=us",
+      "duration": 138
+    },
+    {
+      "id": "1164388645",
+      "hash": "03e8d94759",
+      "client": "Abridge",
+      "film": "The Conversation (Trailer)",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Event Coverage"
+      ],
+      "vimeoUrl": "https://vimeo.com/1164388645/03e8d94759?fl=tl&fe=ec",
+      "playerUrl": "https://player.vimeo.com/video/1164388645?h=03e8d94759",
+      "title": "Abridge: The-Conversation [90]",
+      "thumbnail": "https://i.vimeocdn.com/video/2121005885-f78814bfad64951ec441a0f06c236e91a2ed6e4e64558f99a44bc7bbc6328a06-d_960?region=us",
+      "duration": 73
+    },
+    {
+      "id": "1164427277",
+      "hash": "6ff4a5c60c",
+      "client": "Abridge",
+      "film": "CEO / Homepage Film (2 Min)",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1164427277/6ff4a5c60c?share=copy&fl=sv&fe=ci",
+      "playerUrl": "https://player.vimeo.com/video/1164427277?h=6ff4a5c60c",
+      "title": "Abridge: Vision Film [90]",
+      "thumbnail": "https://i.vimeocdn.com/video/2121059686-658da4ae0496a4f5f79549b3b0e20095bdfbc045e2a6b60e7665470b0b5c7305-d_960?region=us",
+      "duration": 118
+    },
+    {
+      "id": "1164427057",
+      "hash": "67b98ac54a",
+      "client": "Abridge",
+      "film": "CEO / Homepage Film (longform)",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1164427057/67b98ac54a?share=copy&fl=sv&fe=ci",
+      "playerUrl": "https://player.vimeo.com/video/1164427057?h=67b98ac54a",
+      "title": "Abridge: Vision Film",
+      "thumbnail": "https://i.vimeocdn.com/video/2121059542-c9d2b9054822089dc77a2dc4bf95ffa980f962563e748fc2a3bae6578552a775-d_960?region=us",
+      "duration": 257
+    },
+    {
+      "id": "1109098240",
+      "hash": "566f10079a",
+      "client": "Abridge",
+      "film": "Sagar",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Recruitment Film"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109098240/566f10079a?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109098240?h=566f10079a",
+      "title": "Abridge: Sagar",
+      "thumbnail": "https://i.vimeocdn.com/video/2046531675-83a561e302c3bca095ee771e5d224139beaddf564742cf40e7b7acd6c65589c7-d_960?region=us",
+      "duration": 227
+    },
+    {
+      "id": "1164388048",
+      "hash": "9aef17b99a",
+      "client": "ServiceNow",
+      "film": "Putting AI to Work (For People)",
+      "sectors": [
+        "Tech"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1164388048/9aef17b99a?fl=tl&fe=ec",
+      "playerUrl": "https://player.vimeo.com/video/1164388048?h=9aef17b99a",
+      "title": "Service Now: Putting AI to Work for People [Sydney/Bangalore]",
+      "thumbnail": "https://i.vimeocdn.com/video/2121158055-dd72c39b1c0689f8553df5cd4f20645b193a8971ea2b0e0e8b7b0b39b70a435b-d_960?region=us",
+      "duration": 237
+    },
+    {
+      "id": "1109108155",
+      "hash": "890768fc64",
+      "client": "LG",
+      "film": "Being the Machine (Full)",
+      "sectors": [
+        "Tech"
+      ],
+      "videoTypes": [
+        "Experimental"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109108155/890768fc64?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109108155?h=890768fc64",
+      "title": "Parsons The New School: Being the Machine (Full)",
+      "thumbnail": "https://i.vimeocdn.com/video/2046544683-e6dc2381b57a2e20ca8ef53ed3b7cc103e692e7ef41403b894886c6a6b8473c3-d_960?region=us",
+      "duration": 396
+    },
+    {
+      "id": "1109107346",
+      "hash": "c632d37f59",
+      "client": "LG",
+      "film": "Being the Machine (Shortform)",
+      "sectors": [
+        "Tech"
+      ],
+      "videoTypes": [
+        "Experimental"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109107346/c632d37f59?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109107346?h=c632d37f59",
+      "title": "Parsons The New School: Being the Machine Short Form",
+      "thumbnail": "https://i.vimeocdn.com/video/2046541428-4215ba9741aa29de9624e8c4bfa094ab068311558807176af627adf7f03074d3-d_960?region=us",
+      "duration": 94
+    },
+    {
+      "id": "1161600671",
+      "hash": "e05e214276",
+      "client": "Microsoft",
+      "film": "Cloud Banking Technology",
+      "sectors": [
+        "Finance"
+      ],
+      "videoTypes": [
+        "Product Film"
+      ],
+      "vimeoUrl": "https://vimeo.com/1161600671/e05e214276?share=copy&fl=sv&fe=ci",
+      "playerUrl": "https://player.vimeo.com/video/1161600671?h=e05e214276",
+      "title": "WSJ: Microsoft Cloud Banking Technology",
+      "thumbnail": "https://i.vimeocdn.com/video/2117045732-e0100140421ebe4d4d1c182ee0cee0358f32bac9ee4b773f0d5eec04817e10e1-d_960?region=us",
+      "duration": 148
+    },
+    {
+      "id": "1109115319",
+      "hash": "25ca81db7d",
+      "client": "Accenture",
+      "film": "Reinventing the Fortune 500 (Full Length)",
+      "sectors": [
+        "Tech"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109115319/25ca81db7d?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109115319?h=25ca81db7d",
+      "title": "Accenture: Reinventing the Fortune 500 (Full Length)",
+      "thumbnail": "https://i.vimeocdn.com/video/2046553635-8a22ca82ff556928ea8552ffb48cc4e65d3ab377c9493deaa571a20eaf4212a0-d_960?region=us",
+      "duration": 701
+    },
+    {
+      "id": "1109116558",
+      "hash": "72a263d996",
+      "client": "Accenture",
+      "film": "Reinventing the Fortune 500 (Trailer)",
+      "sectors": [
+        "Tech"
+      ],
+      "videoTypes": [
+        "Branded Storytelling",
+        "Trailer"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109116558/72a263d996?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109116558?h=72a263d996",
+      "title": "Accenture: Reinventing the Fortune 500 (Trailer)",
+      "thumbnail": "https://i.vimeocdn.com/video/2046553206-18ccd81c31aaf1f19325b353f9fe71d0bdb65ccae614c7acd8814576d1e845c3-d_960?region=us",
+      "duration": 61
+    },
+    {
+      "id": "1109090305",
+      "hash": "67fa8f5866",
+      "client": "Range Rover",
+      "film": "The Art of the Journey (Full)",
+      "sectors": [
+        "Auto"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109090305/67fa8f5866?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109090305?h=67fa8f5866",
+      "title": "BBC Storyworks: Range Rover",
+      "thumbnail": "https://i.vimeocdn.com/video/2046520137-21d95e9cfab56f10d31d3e5e2db2424495800179c532d5c91a97fad44568f78d-d_960?region=us",
+      "duration": 170
+    },
+    {
+      "id": "1113243302",
+      "hash": "36a9bf4006",
+      "client": "Range Rover",
+      "film": "The Art of the Journey (60)",
+      "sectors": [
+        "Auto"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1113243302/36a9bf4006?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1113243302?h=36a9bf4006",
+      "title": "BBC Storyworks: Range Rover - The Art of the Journey [60]",
+      "thumbnail": "https://i.vimeocdn.com/video/2051691021-4ccf412984d9bcd8679996c190d0320d23bbf739a6674a190b2395df61ff8142-d_960?region=us",
+      "duration": 60
+    },
+    {
+      "id": "1109092069",
+      "hash": "f1d78c5795",
+      "client": "Iberdrola",
+      "film": "Staying Power (Trailer)",
+      "sectors": [
+        "Energy"
+      ],
+      "videoTypes": [
+        "Branded Storytelling",
+        "Trailer"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109092069/f1d78c5795",
+      "playerUrl": "https://player.vimeo.com/video/1109092069?h=f1d78c5795",
+      "title": "Iberdrola Trailer",
+      "thumbnail": "https://i.vimeocdn.com/video/2046522008-7456eadc65cdc5661b3a2d9ce7f17f7eea8e2f8275ccb9be0ec42824bbb6bce2-d_960?region=us",
+      "duration": 84
+    },
+    {
+      "id": "1110968059",
+      "hash": "20e93953e4",
+      "client": "AWS",
+      "film": "Art of the Possible: Druva (60)",
+      "sectors": [
+        "Tech"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1110968059/20e93953e4?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1110968059?h=20e93953e4",
+      "title": "BBC Storyworks: AWS / Druva [60s]",
+      "thumbnail": "https://i.vimeocdn.com/video/2048847045-f7a58ee0291ebc4ec33964a3fc8ca5c686d00c89badc7ca9502c1b145022492a-d_960?region=us",
+      "duration": 60
+    },
+    {
+      "id": "1110966879",
+      "hash": "7c288255fd",
+      "client": "AWS",
+      "film": "Art of the Possible: Druva (Full)",
+      "sectors": [
+        "Tech"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1110966879/7c288255fd?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1110966879?h=7c288255fd",
+      "title": "BBC Storyworks: AWS / Druva",
+      "thumbnail": "https://i.vimeocdn.com/video/2048845669-8fd3a5517fae94b0ea8e73d0439f533f3eb4b06e1253bc76e1fb99a64abffa81-d_960?region=us",
+      "duration": 165
+    },
+    {
+      "id": "1109116951",
+      "hash": "13d1d38b4c",
+      "client": "NYC EDC",
+      "film": "Bringing Business Back (Full)",
+      "sectors": [
+        "Travel"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109116951/13d1d38b4c?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109116951?h=13d1d38b4c",
+      "title": "BBC Storyworks: NYC EDC - Bringing Business Back",
+      "thumbnail": "https://i.vimeocdn.com/video/2046554284-1cdbe5e9afffdce40591ada86d20b196753c71fcfcf365ac0761fa2b38484d2e-d_960?region=us",
+      "duration": 191
+    },
+    {
+      "id": "1110965953",
+      "hash": "c9cb9cd4b3",
+      "client": "AWS",
+      "film": "Art of the Possible: Feathersnap (Full)",
+      "sectors": [
+        "Tech"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1110965953/c9cb9cd4b3?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1110965953?h=c9cb9cd4b3",
+      "title": "BBC Storyworks: AWS / Feathersnap",
+      "thumbnail": "https://i.vimeocdn.com/video/2048844763-e65300c3d2a0a41ee48d2a14b8963c8bd0e15a11ed98ed59d359af46ef69f6d6-d_960?region=us",
+      "duration": 173
+    },
+    {
+      "id": "1110965266",
+      "hash": "2d938cecbe",
+      "client": "AWS",
+      "film": "Art of the Possible: Feathersnap (Shortform)",
+      "sectors": [
+        "Tech"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1110965266/2d938cecbe?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1110965266?h=2d938cecbe",
+      "title": "BBC Storyworks: AWS / Feathersnap [60]",
+      "thumbnail": "https://i.vimeocdn.com/video/2048843601-afc7671eca87dca310076bdbd06404e85a953354c36783bfbc41048eed56581f-d_960?region=us",
+      "duration": 60
+    },
+    {
+      "id": "870342846",
+      "hash": "effbbb9ce5",
+      "client": "Rockefeller University",
+      "film": "Gala Film",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/870342846/effbbb9ce5?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/870342846?h=effbbb9ce5",
+      "title": "Rockefeller University: COVID Response Film - [Dir. Cut]",
+      "thumbnail": "https://i.vimeocdn.com/video/1732355422-150d0e62611e498257b3482a83395f4e7b3a24b5b0956c4f69c330209f333fb8-d_960?region=us",
+      "duration": 932
+    },
+    {
+      "id": "1110968598",
+      "hash": "31a543c1cd",
+      "client": "Mini USA",
+      "film": "Miniac: Trailer",
+      "sectors": [
+        "Auto"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1110968598/31a543c1cd?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1110968598?h=31a543c1cd",
+      "title": "MINIAC: TRAILER REVISION",
+      "thumbnail": "https://i.vimeocdn.com/video/2048847739-817eb6d5c155951c37f9415112882bde8a8f9fd3a6ce99f7bfc1a7cf23fd7027-d_960?region=us",
+      "duration": 72
+    },
+    {
+      "id": "626491475",
+      "hash": "489ced4e51",
+      "client": "JCintime",
+      "film": "Sideways The Musical",
+      "sectors": [
+        "Arts & Culture"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/626491475/489ced4e51?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/626491475?h=489ced4e51",
+      "title": "Behind The Scenes | Sideways The Musical at Buena Vista",
+      "thumbnail": "https://i.vimeocdn.com/video/1999733486-2db9865e202e64e3b45e77f3c77144db041d6fdf6d716c0119dbc43252a063ed-d_960?region=us",
+      "duration": 186
+    },
+    {
+      "id": "449907928",
+      "hash": "c86079fc25",
+      "client": "JCintime",
+      "film": "The Shaker Museum",
+      "sectors": [
+        "Arts & Culture"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/449907928/c86079fc25?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/449907928?h=c86079fc25",
+      "title": "Building the Shaker Museum",
+      "thumbnail": "https://i.vimeocdn.com/video/943816597-63c422f439dc1b8cfc5bee8a920a4404da40e3ced4688d4bd59be61fea118671-d_960?region=us",
+      "duration": 561
+    },
+    {
+      "id": "1109120149",
+      "hash": "feb76ba64f",
+      "client": "Cardboard Stage",
+      "film": "CBS x Talentless",
+      "sectors": [
+        "Fashion"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109120149/feb76ba64f?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109120149?h=feb76ba64f",
+      "title": "Cardboard Stage: Talentless",
+      "thumbnail": "https://i.vimeocdn.com/video/2046558222-4ae16a46516c49c8e4b8462dbc3e191da4033857fa0ab7b0e99e9dc93ff7898c-d_960?region=us",
+      "duration": 254
+    },
+    {
+      "id": "1109118624",
+      "hash": "2aecf2dabb",
+      "client": "Cardboard Stage",
+      "film": "CBS x Live The Process",
+      "sectors": [
+        "Fashion"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109118624/2aecf2dabb?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109118624?h=2aecf2dabb",
+      "title": "Cardboard Stage: Live The Process",
+      "thumbnail": "https://i.vimeocdn.com/video/2046556061-6091b83c363d33dd8334cc5cdbabc00ec4c4ed2603235961a2a35c149a17c93e-d_960?region=us",
+      "duration": 60
+    },
+    {
+      "id": "1109120181",
+      "hash": "2d23759022",
+      "client": "Cardboard Stage",
+      "film": "Shop The Break | Event Film",
+      "sectors": [
+        "Fashion"
+      ],
+      "videoTypes": [
+        "Event Coverage"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109120181/2d23759022?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109120181?h=2d23759022",
+      "title": "CardBoard Stage: Shop The Break",
+      "thumbnail": "https://i.vimeocdn.com/video/2046557415-88e361f5f3509f7d0b36622818db1771fb3ead72dd5b3e9a853f2ee08de9fe11-d_960?region=us",
+      "duration": 57
+    },
+    {
+      "id": "387997382",
+      "hash": "33d70ca219",
+      "client": "Cardboard Stage",
+      "film": "Brand Sizzle",
+      "sectors": [
+        "Fashion"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/387997382/33d70ca219?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/387997382?h=33d70ca219",
+      "title": "Connect. Collaborate. Create.",
+      "thumbnail": "https://i.vimeocdn.com/video/851123816-ec6d47f3e544f1bbb115058f0b17594863dbb6e3314e34f0c79a545c66e52e74-d_960?region=us",
+      "duration": 60
+    },
+    {
+      "id": "294261341",
+      "hash": "8a39caf760",
+      "client": "MADE Hotel",
+      "film": "Global Experience, Local Expression",
+      "sectors": [
+        "Hospitality"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/294261341/8a39caf760?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/294261341?h=8a39caf760",
+      "title": "MADE Hotel: Global Experience | Local Expression",
+      "thumbnail": "https://i.vimeocdn.com/video/783524431-3296589e1c91430b2c3b240c178c17049a08baf81c1d547eac990782db54c8a9-d_960?region=us",
+      "duration": 100
+    },
+    {
+      "id": "1109120215",
+      "hash": "a8c39fd146",
+      "client": "March on Washington Film Festival",
+      "film": "2018 Event Film(s)",
+      "sectors": [
+        "Arts & Culture"
+      ],
+      "videoTypes": [
+        "Event Coverage"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109120215/a8c39fd146?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109120215?h=a8c39fd146",
+      "title": "The March on Washington Film Festival",
+      "thumbnail": "https://i.vimeocdn.com/video/2046558785-1b23f85dfa1d258192b1fad7f324fc27684a8556f5ce34df54536f421450822a-d_960?region=us",
+      "duration": 221
+    },
+    {
+      "id": "1113237198",
+      "hash": "c099533645",
+      "client": "Xpresso Delight",
+      "film": "Franchise Film",
+      "sectors": [
+        "CPG"
+      ],
+      "videoTypes": [
+        "Product Film"
+      ],
+      "vimeoUrl": "https://vimeo.com/1113237198/c099533645?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1113237198?h=c099533645",
+      "title": "Coffee As a Service: Expresso Delight",
+      "thumbnail": "https://i.vimeocdn.com/video/2051683076-5e9898673e7db5495ea1ef4ebc2ed9ad38b3316399d6e3e9583c380340a09e3f-d_960?region=us",
+      "duration": 152
+    },
+    {
+      "id": "1109118386",
+      "hash": "0cdfecb0cc",
+      "client": "IBM Watson",
+      "film": "Thomas J. Watson Fellowship Film 2020",
+      "sectors": [
+        "Education"
+      ],
+      "videoTypes": [
+        "Recruitment Film"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109118386/0cdfecb0cc?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109118386?h=0cdfecb0cc",
+      "title": "Watson: Thomas J Watson Fellowship Film",
+      "thumbnail": "https://i.vimeocdn.com/video/2046554999-879ab82e0eade58e5587cf9476e78d37d5ab7956fe119244a73e4deeeaf1f581-d_960?region=us",
+      "duration": 219
+    },
+    {
+      "id": "1109117423",
+      "hash": "9c1a1bc66f",
+      "client": "IBM Watson",
+      "film": "JK Fellowship Film 2022",
+      "sectors": [
+        "Education"
+      ],
+      "videoTypes": [
+        "Recruitment Film"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109117423/9c1a1bc66f?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109117423?h=9c1a1bc66f",
+      "title": "Watson: JKFellowship",
+      "thumbnail": "https://i.vimeocdn.com/video/2046555868-bcffa5c33bf21804c1e9e12e05a041d3a6c6ddefca6fe62980c2cb7bb219dd68-d_960?region=us",
+      "duration": 295
+    },
+    {
+      "id": "450182659",
+      "hash": "6570635bbd",
+      "client": "MSL Legal",
+      "film": "Law Firm Commercial (NY On Pause)",
+      "sectors": [
+        "Law/Litigation"
+      ],
+      "videoTypes": [
+        "TVC"
+      ],
+      "vimeoUrl": "https://vimeo.com/450182659/6570635bbd?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/450182659?h=6570635bbd",
+      "title": "MSL Legal: Law Firm Commercial | \"New York on Pause\".",
+      "thumbnail": "https://i.vimeocdn.com/video/944241456-8f6c40bc4fc4e38e6c140b0c41ee94c60ba81a43b4d7b22de2ef966a7172e1b6-d_960?region=us",
+      "duration": 30
+    },
+    {
+      "id": "1109111126",
+      "hash": "bdd7889394",
+      "client": "Saffron Road",
+      "film": "Journey To Better (Anthem Film)",
+      "sectors": [
+        "Hospitality",
+        "CPG"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109111126/bdd7889394?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109111126?h=bdd7889394",
+      "title": "Saffron Road: Brand Film Anthem",
+      "thumbnail": "https://i.vimeocdn.com/video/2046545600-82222a042ee4d828ba11bd62f6aff4f5eebbffe08fe4391d8d1cdfdd01b496a6-d_960?region=us",
+      "duration": 91
+    },
+    {
+      "id": "1109111810",
+      "hash": "91e54d294c",
+      "client": "Saffron Road",
+      "film": "Saffron Road: New Adventures",
+      "sectors": [
+        "Hospitality",
+        "CPG"
+      ],
+      "videoTypes": [
+        "TVC"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109111810/91e54d294c?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109111810?h=91e54d294c",
+      "title": "SaffronRoad: New Adventures",
+      "thumbnail": "https://i.vimeocdn.com/video/2046546404-b9907e5e71ee17462b72f911abfa54c915082b2a030ab988dcdcd7bb00729315-d_960?region=us",
+      "duration": 44
+    },
+    {
+      "id": "1109111520",
+      "hash": "8e2641d61f",
+      "client": "Saffron Road",
+      "film": "Saffron Road: More Than Fine Print",
+      "sectors": [
+        "Hospitality",
+        "CPG"
+      ],
+      "videoTypes": [
+        "TVC"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109111520/8e2641d61f?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109111520?h=8e2641d61f",
+      "title": "Saffron Road: More Than Fine Print",
+      "thumbnail": "https://i.vimeocdn.com/video/2046545966-756a5e069f58b36f38c27ddd1e61e48b4f8ae306a44149df62a5a0681b3f51f4-d_960?region=us",
+      "duration": 43
+    },
+    {
+      "id": "1109112133",
+      "hash": "d657bb5ea5",
+      "client": "Saffron Road",
+      "film": "Saffron Road: Our Promise",
+      "sectors": [
+        "Hospitality",
+        "CPG"
+      ],
+      "videoTypes": [
+        "TVC"
+      ],
+      "vimeoUrl": "https://vimeo.com/1109112133/d657bb5ea5?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1109112133?h=d657bb5ea5",
+      "title": "Saffron Road: Our Promise",
+      "thumbnail": "https://i.vimeocdn.com/video/2046546764-653c9b310551ddc7f1b0e01e32a1b3567f1637d7681a1a13cd2ac31b34baf0a3-d_960?region=us",
+      "duration": 46
+    },
+    {
+      "id": "910478397",
+      "hash": "8f3366178a",
+      "client": "ZAHF",
+      "film": "Sister Nelly: Humanitarian Nominee Film",
+      "sectors": [
+        "Travel"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/910478397/8f3366178a?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/910478397?h=8f3366178a",
+      "title": "ZAHF 2024: Sister Nelly Correa",
+      "thumbnail": "https://i.vimeocdn.com/video/1795165944-17798e34941bde00169898c0b7fd6f382ae94dfbaa7f88148775f489c8e881a6-d_960?region=us",
+      "duration": 230
+    },
+    {
+      "id": "1071076411",
+      "hash": null,
+      "client": "The Infamous Future",
+      "film": "Trailer",
+      "sectors": [],
+      "videoTypes": [],
+      "vimeoUrl": "https://vimeo.com/1071076411?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/1071076411",
+      "title": "The Infamous Future [OFFICIAL TRAILER]",
+      "thumbnail": "https://i.vimeocdn.com/video/1999732077-e8a86d16e9bfa84020dd87b0aa434d01ecc8f852a702a712f9eda3924b5619f7-d_960?region=us",
+      "duration": 117
+    },
+    {
+      "id": "272620803",
+      "hash": "d4876b788c",
+      "client": "For What It's Worth",
+      "film": "Full Film",
+      "sectors": [],
+      "videoTypes": [],
+      "vimeoUrl": "https://vimeo.com/272620803/d4876b788c?share=copy",
+      "playerUrl": "https://player.vimeo.com/video/272620803?h=d4876b788c",
+      "title": "",
+      "thumbnail": "",
+      "duration": null
+    },
+    {
+      "id": "1197771881",
+      "hash": "a9fa5e4b48",
+      "client": "Abridge",
+      "film": "ChristUS",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1197771881/a9fa5e4b48",
+      "playerUrl": "https://player.vimeo.com/video/1197771881?h=a9fa5e4b48",
+      "title": "LC1243_Abridge-ChristUS-251117-H264-FINAL",
+      "thumbnail": "https://i.vimeocdn.com/video/2164182863-9035288c4fc9b39d9baf2828cfbedc1846240de53b253024327b6e9d4f07758c-d_1280x720?&r=pad&region=us",
+      "duration": 223
+    },
+    {
+      "id": "1197771630",
+      "hash": "215e42f014",
+      "client": "Abridge",
+      "film": "PX Expertise",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1197771630/215e42f014",
+      "playerUrl": "https://player.vimeo.com/video/1197771630?h=215e42f014",
+      "title": "LC1252_Abridge-PX_Expertise-BF-260113-FINAL",
+      "thumbnail": "https://i.vimeocdn.com/video/2164180835-afbf7e21a7774ca0ba081bca8245365e94b544be2e7ed66fb14c6d96ea761f1e-d_1280x720?&r=pad&region=us",
+      "duration": 124
+    },
+    {
+      "id": "1197771566",
+      "hash": "8577b0c6fa",
+      "client": "Abridge",
+      "film": "Love Notes",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1197771566/8577b0c6fa",
+      "playerUrl": "https://player.vimeo.com/video/1197771566?h=8577b0c6fa",
+      "title": "LC1252_Abridge_LoveNotes_20251215_FINAL_H264",
+      "thumbnail": "https://i.vimeocdn.com/video/2164182924-7176307dfd0263ccb2a441ba4c00ec11996ccb4c3986f7f2df7ebd5b7b1b23a4-d_1280x720?&r=pad&region=us",
+      "duration": 200
+    },
+    {
+      "id": "1197770900",
+      "hash": "647aa47dcd",
+      "client": "Abridge",
+      "film": "CDS — Product Demo",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Product Film"
+      ],
+      "vimeoUrl": "https://vimeo.com/1197770900/647aa47dcd",
+      "playerUrl": "https://player.vimeo.com/video/1197770900?h=647aa47dcd",
+      "title": "LC1286_Abridge_CDS-260331-BF-(Product Demo)-H264-FINAL",
+      "thumbnail": "https://i.vimeocdn.com/video/2164178186-b2399ef62f5c426d4afad0d6c2391ecdb058b197ee94d6c13ea55277ba03f9b1-d_1280x720?&r=pad&region=us",
+      "duration": 108
+    },
+    {
+      "id": "1197770557",
+      "hash": "3d8925d2f8",
+      "client": "Abridge",
+      "film": "CDS — Platform Demo (Animation)",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Product Film"
+      ],
+      "vimeoUrl": "https://vimeo.com/1197770557/3d8925d2f8",
+      "playerUrl": "https://player.vimeo.com/video/1197770557?h=3d8925d2f8",
+      "title": "LC1286_Abridge_CDS-260330-BF-(CDS Platform Demo Animation)-H264-FINAL",
+      "thumbnail": "https://i.vimeocdn.com/video/2164177271-ac72e912b2d2ffb2836ae90b073dd6ab53ed211808648e60d92c644dd0a0a8b8-d_1280x720?&r=pad&region=us",
+      "duration": 66
+    },
+    {
+      "id": "1197768849",
+      "hash": "1426a362d2",
+      "client": "Abridge",
+      "film": "SF Builders",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1197768849/1426a362d2",
+      "playerUrl": "https://player.vimeo.com/video/1197768849?h=1426a362d2",
+      "title": "LC1286_Abridge_SF-Builders-260316-FINAL-H264-HD",
+      "thumbnail": "https://i.vimeocdn.com/video/2164178102-bf1d57168d1a5199c134d4496ac62a83ebab12cfa05e8e0998986776c8756ce9-d_1280x720?&r=pad&region=us",
+      "duration": 122
+    },
+    {
+      "id": "1197767822",
+      "hash": "73d53a8c9c",
+      "client": "Abridge",
+      "film": "CLRF",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1197767822/73d53a8c9c",
+      "playerUrl": "https://player.vimeo.com/video/1197767822?h=73d53a8c9c",
+      "title": "LC1286_Abridge_CLRF_260413_BF_260413_H264_FINAL",
+      "thumbnail": "https://i.vimeocdn.com/video/2164178509-30f48d6c2c10177e8d0b6afa6687e1012103065b2b2ee556d3dc1834db2693eb-d_1280x720?&r=pad&region=us",
+      "duration": 187
+    },
+    {
+      "id": "1197767821",
+      "hash": "3b3bc638f5",
+      "client": "Abridge",
+      "film": "Rochester — Day in the Life",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1197767821/3b3bc638f5",
+      "playerUrl": "https://player.vimeo.com/video/1197767821?h=3b3bc638f5",
+      "title": "LC1279_Abridge-Rochester-DITL_260414_H264_FINAL",
+      "thumbnail": "https://i.vimeocdn.com/video/2164176770-72249a6035409035cced52b5dd1e71126d6ff18799d8290402015ed77f1b72a2-d_1280x720?&r=pad&region=us",
+      "duration": 113
+    },
+    {
+      "id": "1197767820",
+      "hash": "0e4ff3d0af",
+      "client": "Abridge",
+      "film": "Rochester — CEO",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1197767820/0e4ff3d0af",
+      "playerUrl": "https://player.vimeo.com/video/1197767820?h=0e4ff3d0af",
+      "title": "LC1279_Abridge-Rochester-CEO_260415_H264_FINAL",
+      "thumbnail": "https://i.vimeocdn.com/video/2164178946-7614ad181f91cc19fe4c5e1a9b68a0ec3230ad9d10946965867238e4fde292cd-d_1280x720?&r=pad&region=us",
+      "duration": 236
+    },
+    {
+      "id": "1166728266",
+      "hash": "2ae45e4628",
+      "client": "Abridge",
+      "film": "Epic Demo — In Patient",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Product Film"
+      ],
+      "vimeoUrl": "https://vimeo.com/1166728266/2ae45e4628",
+      "playerUrl": "https://player.vimeo.com/video/1166728266?h=2ae45e4628",
+      "title": "Abridge: Epic Demo – In Patient",
+      "thumbnail": "https://i.vimeocdn.com/video/2124459853-533a540b02095b6d79ea2b270ed0f1bfd51566a55e6d22a24ff284689e75cb1f-d_1280x720?&r=pad&region=us",
+      "duration": 223
+    },
+    {
+      "id": "1166728168",
+      "hash": "7b1f5cae4c",
+      "client": "Abridge",
+      "film": "Epic Demo — Emergency Department",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Product Film"
+      ],
+      "vimeoUrl": "https://vimeo.com/1166728168/7b1f5cae4c",
+      "playerUrl": "https://player.vimeo.com/video/1166728168?h=7b1f5cae4c",
+      "title": "Abridge: Epic Demo – Emergency Department",
+      "thumbnail": "https://i.vimeocdn.com/video/2124459972-de6e464b05c2785879b866688faccb8a2e7ee84407e1e84f13a01bb6a4e909d8-d_1280x720?&r=pad&region=us",
+      "duration": 180
+    },
+    {
+      "id": "1166727963",
+      "hash": "39f322bbb3",
+      "client": "Abridge",
+      "film": "Epic Demo — Ambulatory",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Product Film"
+      ],
+      "vimeoUrl": "https://vimeo.com/1166727963/39f322bbb3",
+      "playerUrl": "https://player.vimeo.com/video/1166727963?h=39f322bbb3",
+      "title": "Abridge: Epic Demo – Ambulatory",
+      "thumbnail": "https://i.vimeocdn.com/video/2124459574-e4f2be8f30584aecd05f1f85b69b987229dcc7b661af657cdc738496b7f83ea0-d_1280x720?&r=pad&region=us",
+      "duration": 403
+    },
+    {
+      "id": "1166727866",
+      "hash": "87b49a7312",
+      "client": "Abridge",
+      "film": "Epic Demo — For Nurses",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Product Film"
+      ],
+      "vimeoUrl": "https://vimeo.com/1166727866/87b49a7312",
+      "playerUrl": "https://player.vimeo.com/video/1166727866?h=87b49a7312",
+      "title": "Abridge: Epic Demo – Abridge For Nurses",
+      "thumbnail": "https://i.vimeocdn.com/video/2124459284-d3ef58a23324e5cd2220f117b6df6574abb377908c4fd37bf842907b7ce42d8d-d_1280x720?&r=pad&region=us",
+      "duration": 183
+    },
+    {
+      "id": "1164390673",
+      "hash": "d2c7be5d02",
+      "client": "Abridge",
+      "film": "Inova Health Impact Film",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1164390673/d2c7be5d02",
+      "playerUrl": "https://player.vimeo.com/video/1164390673?h=d2c7be5d02",
+      "title": "Abridge: Inova Health Impact Film",
+      "thumbnail": "https://i.vimeocdn.com/video/2121008856-c20b0370bd8e0b478d85bc886b30b68e8efedf823904a8fedda29a59035d4452-d_1280x720?&r=pad&region=us",
+      "duration": 111
+    },
+    {
+      "id": "1164389154",
+      "hash": "2f2d02dcc6",
+      "client": "Abridge",
+      "film": "Human by Design — Myron Rolle",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1164389154/2f2d02dcc6",
+      "playerUrl": "https://player.vimeo.com/video/1164389154?h=2f2d02dcc6",
+      "title": "Abridge: \"Human by Design\" - Myron Rolle",
+      "thumbnail": "https://i.vimeocdn.com/video/2121153402-9ffa4b3cab598a2be0d9bf86f5a74e432601e81f8275618d6faa53a7bd173132-d_1280x720?&r=pad&region=us",
+      "duration": 60
+    },
+    {
+      "id": "1164389067",
+      "hash": "a49f9e1593",
+      "client": "Abridge",
+      "film": "Human by Design — Will Guidara",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1164389067/a49f9e1593",
+      "playerUrl": "https://player.vimeo.com/video/1164389067?h=a49f9e1593",
+      "title": "Abridge: \"Human by Design\" - Will Guidara",
+      "thumbnail": "https://i.vimeocdn.com/video/2121151702-7b697f72f30df089af53a0c264f784314187b3a35e3a461aa9c29a34fbd7f62f-d_1280x720?&r=pad&region=us",
+      "duration": 103
+    },
+    {
+      "id": "1164388965",
+      "hash": "fd2ebf9faa",
+      "client": "Abridge",
+      "film": "Human by Design — Dan Nevins",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1164388965/fd2ebf9faa",
+      "playerUrl": "https://player.vimeo.com/video/1164388965?h=fd2ebf9faa",
+      "title": "Abridge: \"Human by Design\" - Dan Nevins",
+      "thumbnail": "https://i.vimeocdn.com/video/2121152887-e7b0d80f9737dd244a76288124e8c8529679a73666685fe1979b590e86d64716-d_1280x720?&r=pad&region=us",
+      "duration": 106
+    },
+    {
+      "id": "1164388860",
+      "hash": "ba56bd1db0",
+      "client": "Abridge",
+      "film": "Human by Design — Eric Topol",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1164388860/ba56bd1db0",
+      "playerUrl": "https://player.vimeo.com/video/1164388860?h=ba56bd1db0",
+      "title": "Abridge: \"Human by Design\" - Eric Topal",
+      "thumbnail": "https://i.vimeocdn.com/video/2121152447-39deff63371a5e5fe3d00056e9bc091d6d39cdb6b9b1a1ced0637339b7d322e0-d_1280x720?&r=pad&region=us",
+      "duration": 85
+    },
+    {
+      "id": "1164388777",
+      "hash": "71fecd65f0",
+      "client": "Abridge",
+      "film": "Human by Design — Baratunde Thurston",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1164388777/71fecd65f0",
+      "playerUrl": "https://player.vimeo.com/video/1164388777?h=71fecd65f0",
+      "title": "Abridge: \"Human by Design\" - Baratunde Thurston",
+      "thumbnail": "https://i.vimeocdn.com/video/2121153893-63dc51f484d1948e87980f856b511b28b759f4494c43d9e40b6a7130d861bf62-d_1280x720?&r=pad&region=us",
+      "duration": 89
+    },
+    {
+      "id": "1164388711",
+      "hash": "92564e2e26",
+      "client": "Abridge",
+      "film": "Human by Design — John McEnroe",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1164388711/92564e2e26",
+      "playerUrl": "https://player.vimeo.com/video/1164388711?h=92564e2e26",
+      "title": "Abridge: \"Human by Design\" - John-McEnroe",
+      "thumbnail": "https://i.vimeocdn.com/video/2121155074-bae78bf3ad6dd27a739cea03b1623b47405fb6cb1c39d06e495a13ea799124b1-d_1280x720?&r=pad&region=us",
+      "duration": 66
+    },
+    {
+      "id": "1164388386",
+      "hash": "3bfc40bff7",
+      "client": "Abridge",
+      "film": "The Conversation (Full)",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1164388386/3bfc40bff7",
+      "playerUrl": "https://player.vimeo.com/video/1164388386?h=3bfc40bff7",
+      "title": "Abridge: The-Conversation",
+      "thumbnail": "https://i.vimeocdn.com/video/2121005757-40cc5175fffaae1b4e0e55d15e393fb74f24a24c2e189aa510eb76f31497ce14-d_1280x720?&r=pad&region=us",
+      "duration": 251
+    },
+    {
+      "id": "1164396470",
+      "hash": "9f90530d9a",
+      "client": "Wells Fargo",
+      "film": "Perspectives — Episode 1",
+      "sectors": [
+        "Finance"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1164396470/9f90530d9a",
+      "playerUrl": "https://player.vimeo.com/video/1164396470?h=9f90530d9a",
+      "title": "Wells Fargo: Perspectives, Episode 1",
+      "thumbnail": "https://i.vimeocdn.com/video/2134257781-4a79f14e04c8603bbdd7eea3f42b3ce1e6bcc4c3e2e24b0f61161872f094ce76-d_1280x720?&r=pad&region=us",
+      "duration": 1484
+    },
+    {
+      "id": "1166818015",
+      "hash": "5f46103344",
+      "client": "Wells Fargo",
+      "film": "Perspectives — Episode 1 (Trailer)",
+      "sectors": [
+        "Finance"
+      ],
+      "videoTypes": [
+        "Trailer"
+      ],
+      "vimeoUrl": "https://vimeo.com/1166818015/5f46103344",
+      "playerUrl": "https://player.vimeo.com/video/1166818015?h=5f46103344",
+      "title": "Wells Fargo: PERSPECTIVES – Episode 1 [Trailer]",
+      "thumbnail": "https://i.vimeocdn.com/video/2124582312-475a00aea59ca6df52e7b241f7cf0acecdce748e7330c41aa449efb7b1bed94c-d_1280x720?&r=pad&region=us",
+      "duration": 40
+    },
+    {
+      "id": "1164388358",
+      "hash": "e2764ccaf9",
+      "client": "ServiceNow",
+      "film": "Putting AI to Work for People [30]",
+      "sectors": [
+        "Tech"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1164388358/e2764ccaf9",
+      "playerUrl": "https://player.vimeo.com/video/1164388358?h=e2764ccaf9",
+      "title": "ServiceNow: Putting AI to Work for People [30]",
+      "thumbnail": "https://i.vimeocdn.com/video/2121159369-574823d417e2fc769cdc04865a447c0ac755f74697825ee953c679af85d77882-d_1280x720?&r=pad&region=us",
+      "duration": 30
+    },
+    {
+      "id": "1164388259",
+      "hash": "5060ab0610",
+      "client": "ServiceNow",
+      "film": "Putting AI to Work for People [60]",
+      "sectors": [
+        "Tech"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1164388259/5060ab0610",
+      "playerUrl": "https://player.vimeo.com/video/1164388259?h=5060ab0610",
+      "title": "Service Now: Putting AI to Work for People [60]",
+      "thumbnail": "https://i.vimeocdn.com/video/2121005330-ead03f67ea721471deb6c7c4fb2a133c21b9b68beb4cbe1ebe0df29228bbf2fd-d_1280x720?&r=pad&region=us",
+      "duration": 60
+    },
+    {
+      "id": "1177757404",
+      "hash": "b6a0a482cf",
+      "client": "Metrica",
+      "film": "Beyond All Measure [30]",
+      "sectors": [
+        "Luxury"
+      ],
+      "videoTypes": [
+        "TVC"
+      ],
+      "vimeoUrl": "https://vimeo.com/1177757404/b6a0a482cf",
+      "playerUrl": "https://player.vimeo.com/video/1177757404?h=b6a0a482cf",
+      "title": "Metrica: Beyond All Measure [30]",
+      "thumbnail": "https://i.vimeocdn.com/video/2139170113-4b6317d5ca1905811106e323676440816e8f7207b4beca823901a0e6c5bccb75-d_1280x720?&r=pad&region=us",
+      "duration": 30
+    },
+    {
+      "id": "1177757323",
+      "hash": "833df92a19",
+      "client": "Metrica",
+      "film": "Beyond All Measure [60]",
+      "sectors": [
+        "Luxury"
+      ],
+      "videoTypes": [
+        "TVC"
+      ],
+      "vimeoUrl": "https://vimeo.com/1177757323/833df92a19",
+      "playerUrl": "https://player.vimeo.com/video/1177757323?h=833df92a19",
+      "title": "Metrica: Beyond All Measure [60]",
+      "thumbnail": "https://i.vimeocdn.com/video/2139169500-1dc36b7952234bdedd8f85cfd6d8bf4e7c7cbdcab32c988bd94fe47b471c38a4-d_1280x720?&r=pad&region=us",
+      "duration": 60
+    },
+    {
+      "id": "1164395400",
+      "hash": "0296bed4a8",
+      "client": "Mayo Clinic",
+      "film": "Mayo Clinic",
+      "sectors": [
+        "Healthcare"
+      ],
+      "videoTypes": [
+        "Branded Storytelling"
+      ],
+      "vimeoUrl": "https://vimeo.com/1164395400/0296bed4a8",
+      "playerUrl": "https://player.vimeo.com/video/1164395400?h=0296bed4a8",
+      "title": "Mayo Clinic",
+      "thumbnail": "https://i.vimeocdn.com/video/2143111757-74cffd34102965408eedc206bd01b14937645867689d6f4f596a0a3d026142b0-d_1280x720?&r=pad&region=us",
+      "duration": 127
+    },
+    {
+      "id": "1198474324",
+      "hash": "92cfc61f0d",
+      "client": "BBC Studios",
+      "film": "North American Sizzle Reel",
+      "sectors": [
+        "TV & Film"
+      ],
+      "videoTypes": [
+        "Trailer"
+      ],
+      "vimeoUrl": "https://vimeo.com/1198474324/92cfc61f0d",
+      "playerUrl": "https://player.vimeo.com/video/1198474324?h=92cfc61f0d",
+      "title": "North American Sizzle Reel",
+      "thumbnail": "https://i.vimeocdn.com/video/2165076904-2677f45d91ef1ff4cc9dc2784ebfe4460a27c8460d2b7beafa458c1c9385a335-d_1280x720?&r=pad&region=us",
+      "duration": 67
+    },
+    {
+      "id": "1071069851",
+      "hash": "362f4e7eb1",
+      "client": "Rich Butterworth",
+      "film": "Director Showreel",
+      "sectors": [],
+      "videoTypes": [],
+      "vimeoUrl": "https://vimeo.com/1071069851/362f4e7eb1",
+      "playerUrl": "https://player.vimeo.com/video/1071069851?h=362f4e7eb1",
+      "title": "Rich Butterworth: Director Showreel",
+      "thumbnail": "https://i.vimeocdn.com/video/1999723055-2379087c705c81a1fa653d51bb7675dea8386b1a0465d51eb2aff3d84b75f5bb-d_1280x720?&r=pad&region=us",
+      "duration": 120
+    }
+  ]
+}

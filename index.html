@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Little Crush Films — Work</title>
+    <link rel="stylesheet" href="styles.css?v=12" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">Little Crush Films</span>
+        <span class="brand-sub">Work Library</span>
+      </div>
+      <div class="topbar-actions">
+        <input
+          id="search"
+          class="search"
+          type="search"
+          placeholder="Search client or film…"
+          autocomplete="off"
+        />
+        <button id="scanBtn" class="btn" title="Check Vimeo for films not yet in the library">⟳ Scan Vimeo</button>
+        <button id="addBtn" class="btn btn-primary">+ Add film</button>
+      </div>
+    </header>
+
+    <section class="filters" id="filters">
+      <div class="filter-group" id="filter-sector">
+        <span class="filter-label">Sector</span>
+        <div class="chips" data-group="sector"></div>
+      </div>
+      <div class="filter-group" id="filter-type">
+        <span class="filter-label">Type</span>
+        <div class="chips" data-group="videoType"></div>
+      </div>
+      <div class="filter-meta">
+        <span id="count" class="count"></span>
+        <button id="clearBtn" class="btn btn-ghost" hidden>Clear filters</button>
+      </div>
+    </section>
+
+    <main>
+      <div id="grid" class="grid" aria-live="polite"></div>
+      <div id="empty" class="empty" hidden>
+        No films match those filters. <button class="linkbtn" id="emptyClear">Clear filters</button>
+      </div>
+    </main>
+
+    <!-- Player modal -->
+    <div id="playerModal" class="modal" hidden>
+      <div class="modal-backdrop" data-close></div>
+      <div class="modal-card player-card" role="dialog" aria-modal="true" aria-label="Film player">
+        <button class="modal-close" data-close aria-label="Close">&times;</button>
+        <div class="player-frame" id="playerFrame"></div>
+        <div class="player-meta">
+          <div>
+            <div class="player-client" id="playerClient"></div>
+            <div class="player-film" id="playerFilm"></div>
+          </div>
+          <div class="player-actions">
+            <button id="editFilm" class="btn">Edit</button>
+            <button id="copyLink" class="btn btn-primary">Copy private link</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add-film modal -->
+    <div id="addModal" class="modal" hidden>
+      <div class="modal-backdrop" data-close></div>
+      <div class="modal-card add-card" role="dialog" aria-modal="true" aria-label="Add a film">
+        <button class="modal-close" data-close aria-label="Close">&times;</button>
+        <h2 class="add-title" id="addTitle">Add a film</h2>
+        <p class="add-hint" id="addModeHint"></p>
+
+        <label class="field" id="addUrlField">
+          <span>Vimeo link</span>
+          <div class="field-row">
+            <input id="addUrl" type="url" placeholder="https://vimeo.com/123…/abc…" />
+            <button id="fetchMeta" class="btn">Fetch</button>
+          </div>
+        </label>
+
+        <div id="addPreview" class="add-preview" hidden>
+          <img id="addThumb" alt="" />
+          <div class="add-fields">
+            <label class="field">
+              <span>Client</span>
+              <input id="addClient" type="text" />
+            </label>
+            <label class="field">
+              <span>Film</span>
+              <input id="addFilm" type="text" />
+            </label>
+            <div class="field">
+              <span>Sectors <small>· pick any that apply</small></span>
+              <div class="pick" id="pickSector"></div>
+              <div class="field-row">
+                <input id="newSector" type="text" placeholder="Add a sector…" />
+                <button type="button" id="addSectorBtn" class="btn">Add</button>
+              </div>
+            </div>
+            <div class="field">
+              <span>Video types <small>· pick any that apply</small></span>
+              <div class="pick" id="pickType"></div>
+              <div class="field-row">
+                <input id="newType" type="text" placeholder="Add a type…" />
+                <button type="button" id="addTypeBtn" class="btn">Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="add-error" id="addError" hidden></p>
+
+        <div class="add-actions">
+          <button id="skipFilm" class="btn" hidden>Skip</button>
+          <button id="saveFilm" class="btn btn-primary" disabled>Save film</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" hidden></div>
+
+    <script src="data.js?v=12"></script>
+    <script src="app.js?v=12"></script>
+  </body>
+</html>
