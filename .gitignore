@@ -1,0 +1,17 @@
+# Secrets — never commit (this repo is public)
+.env
+.env.*
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Build output
+dist/
+
+# macOS
+.DS_Store
