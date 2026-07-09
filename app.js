@@ -4,15 +4,19 @@
 
   const $ = (sel) => document.querySelector(sel);
 
-  // Filter groups. `field` is the film property; `client` is a single string,
-  // sectors/videoTypes are arrays — valuesOf() normalises both to a list.
+  // Filter groups. `field` is the film property; clients/sectors/videoTypes are
+  // all arrays now — valuesOf() normalises to a list (tolerates a lone string).
   const FILTER_GROUPS = [
     { key: "sectors", field: "sectors", chips: "#filter-sector .chips" },
     { key: "videoTypes", field: "videoTypes", chips: "#filter-type .chips" },
-    { key: "clients", field: "client", chips: "#filter-client .chips" },
+    { key: "clients", field: "clients", chips: "#filter-client .chips" },
   ];
   const valuesOf = (f, field) =>
     Array.isArray(f[field]) ? f[field] : f[field] ? [f[field]] : [];
+
+  // A film's client(s) as one display string ("Mayo Clinic · Abridge").
+  const clientLabel = (f) =>
+    (f.clients && f.clients.length ? f.clients : f.client ? [f.client] : []).join(" · ");
 
   const state = {
     films: [],
@@ -70,7 +74,7 @@
 
   const matchesSearch = (f) =>
     !state.search ||
-    (f.client + " " + f.film + " " + (f.title || ""))
+    (clientLabel(f) + " " + f.film + " " + (f.title || ""))
       .toLowerCase()
       .includes(state.search);
 
@@ -133,7 +137,7 @@
       const dur = fmtDuration(f.duration);
       const thumb = f.thumbnail
         ? '<img loading="lazy" src="' + esc(f.thumbnail) + '" alt="' + esc(f.film) + '" />'
-        : '<div class="noimg">' + esc(f.client + " — " + f.film) + "</div>";
+        : '<div class="noimg">' + esc(clientLabel(f) + " — " + f.film) + "</div>";
       const copyIcon =
         '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"' +
         ' stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
@@ -146,7 +150,7 @@
         (dur ? '<span class="c-dur">' + dur + "</span>" : "") +
         '<div class="c-play"></div>' +
         '<div class="overlay">' +
-        '<div class="c-client">' + esc(f.client) + "</div>" +
+        '<div class="c-client">' + esc(clientLabel(f)) + "</div>" +
         '<div class="c-film">' + esc(f.film) + "</div>" +
         "</div>";
       card.addEventListener("click", () => openPlayer(f));
@@ -182,7 +186,7 @@
     const src = f.playerUrl + sep + "autoplay=1&title=0&byline=0&portrait=0";
     $("#playerFrame").innerHTML =
       '<iframe src="' + esc(src) + '" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>';
-    $("#playerClient").textContent = f.client;
+    $("#playerClient").textContent = clientLabel(f);
     $("#playerFilm").textContent = f.film;
     $("#copyLink").onclick = () => copyLink(f.vimeoUrl);
     $("#editFilm").onclick = () => openEditor(f);
@@ -211,9 +215,8 @@
   let editingId = null;
   let editingFilm = null;
 
-  // Multi-select pickers (sectors/types) + single-select client.
-  const addSel = { sectors: new Set(), videoTypes: new Set() };
-  let addClientVal = "";
+  // Multi-select pickers (clients / sectors / videoTypes).
+  const addSel = { sectors: new Set(), videoTypes: new Set(), clients: new Set() };
 
   const inSel = (group, value) => {
     const k = LCF.canonKey(value);
@@ -258,38 +261,6 @@
     renderPick(group, containerSel);
   }
 
-  // Single-select client chip picker (existing clients + add-new → no duplicates).
-  function renderClientPick() {
-    const box = $("#pickClient");
-    box.innerHTML = "";
-    const byKey = new Map();
-    distinct("client").forEach((v) => byKey.set(LCF.canonKey(v), v));
-    if (addClientVal && !byKey.has(LCF.canonKey(addClientVal)))
-      byKey.set(LCF.canonKey(addClientVal), addClientVal);
-    [...byKey.values()]
-      .sort((a, b) => a.localeCompare(b))
-      .forEach((value) => {
-        const active = LCF.canonKey(value) === LCF.canonKey(addClientVal);
-        const chip = document.createElement("button");
-        chip.type = "button";
-        chip.className = "chip" + (active ? " active" : "");
-        chip.textContent = value;
-        chip.addEventListener("click", () => {
-          addClientVal = active ? "" : value; // single-select toggle
-          renderClientPick();
-        });
-        box.appendChild(chip);
-      });
-  }
-
-  function addClientCustom() {
-    const v = canonicalize("client", $("#newClient").value);
-    if (!v) return;
-    addClientVal = v;
-    $("#newClient").value = "";
-    renderClientPick();
-  }
-
   // Reset shared modal to "add" mode (used by the scan flow).
   function resetModalToAdd() {
     editingId = null;
@@ -331,10 +302,10 @@
     };
     addSel.sectors.clear();
     addSel.videoTypes.clear();
-    addClientVal = "";
+    addSel.clients.clear();
     renderPick("sectors", "#pickSector");
     renderPick("videoTypes", "#pickType");
-    renderClientPick();
+    renderPick("clients", "#pickClient");
     $("#newSector").value = "";
     $("#newType").value = "";
     $("#newClient").value = "";
@@ -379,10 +350,10 @@
     $("#addModeHint").textContent = "Update details or tags — saves for everyone.";
     addSel.sectors = new Set(f.sectors || []);
     addSel.videoTypes = new Set(f.videoTypes || []);
-    addClientVal = f.client || "";
+    addSel.clients = new Set(f.clients || (f.client ? [f.client] : []));
     renderPick("sectors", "#pickSector");
     renderPick("videoTypes", "#pickType");
-    renderClientPick();
+    renderPick("clients", "#pickClient");
     $("#newSector").value = "";
     $("#newType").value = "";
     $("#newClient").value = "";
@@ -430,13 +401,13 @@
     $("#addError").hidden = true;
     $("#saveFilm").disabled = true;
     try {
-      const client = addClientVal.trim();
+      const clients = [...addSel.clients];
       const film = $("#addFilm").value.trim();
       const sectors = [...addSel.sectors];
       const videoTypes = [...addSel.videoTypes];
 
       if (editingId) {
-        await LCF.updateFilm(editingId, { client, film, sectors, videoTypes });
+        await LCF.updateFilm(editingId, { clients, film, sectors, videoTypes });
         state.films = await LCF.loadFilms();
         render();
         hideModal("#addModal");
@@ -447,7 +418,7 @@
       const entry = {
         id: pendingMeta.id,
         hash: pendingMeta.hash,
-        client,
+        clients,
         film,
         sectors,
         videoTypes,
@@ -514,7 +485,9 @@
     $("#addTypeBtn").addEventListener("click", () =>
       addCustom("videoTypes", "#newType", "#pickType")
     );
-    $("#addClientBtn").addEventListener("click", addClientCustom);
+    $("#addClientBtn").addEventListener("click", () =>
+      addCustom("clients", "#newClient", "#pickClient")
+    );
     $("#newSector").addEventListener("keydown", (e) => {
       if (e.key === "Enter") { e.preventDefault(); addCustom("sectors", "#newSector", "#pickSector"); }
     });
@@ -522,7 +495,7 @@
       if (e.key === "Enter") { e.preventDefault(); addCustom("videoTypes", "#newType", "#pickType"); }
     });
     $("#newClient").addEventListener("keydown", (e) => {
-      if (e.key === "Enter") { e.preventDefault(); addClientCustom(); }
+      if (e.key === "Enter") { e.preventDefault(); addCustom("clients", "#newClient", "#pickClient"); }
     });
 
     $("#clearBtn").addEventListener("click", clearFilters);

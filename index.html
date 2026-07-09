@@ -81,18 +81,18 @@
         <div id="addPreview" class="add-preview" hidden>
           <img id="addThumb" alt="" />
           <div class="add-fields">
+            <label class="field">
+              <span>Film</span>
+              <input id="addFilm" type="text" />
+            </label>
             <div class="field">
-              <span>Client</span>
+              <span>Client <small>· pick any that apply</small></span>
               <div class="pick" id="pickClient"></div>
               <div class="field-row">
                 <input id="newClient" type="text" placeholder="Add a client…" />
                 <button type="button" id="addClientBtn" class="btn">Add</button>
               </div>
             </div>
-            <label class="field">
-              <span>Film</span>
-              <input id="addFilm" type="text" />
-            </label>
             <div class="field">
               <span>Sectors <small>· pick any that apply</small></span>
               <div class="pick" id="pickSector"></div>
@@ -124,7 +124,7 @@
 
     <div id="toast" class="toast" hidden></div>
 
-    <script src="data.js?v=14"></script>
-    <script src="app.js?v=14"></script>
+    <script src="data.js?v=15"></script>
+    <script src="app.js?v=15"></script>
   </body>
 </html>

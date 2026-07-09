@@ -81,12 +81,35 @@ LCF._saveLocal = (arr) =>
 
 // ---- public API the UI uses -----------------------------------------------------
 
-// Coerce any film to the current multi-category shape (sectors/videoTypes arrays).
-// Handles legacy entries (e.g. older localStorage adds) that used single strings.
+// Coerce any film to the current multi-category shape (clients/sectors/videoTypes
+// arrays). Handles legacy entries (older localStorage adds, single-string fields).
 LCF.normalizeFilm = function (f) {
+  // Clients: the DB has a single text `client`, which holds either one plain
+  // name OR a JSON array of names (co-branded / partnership films). Fold both
+  // into f.clients (array); keep f.client as the primary readable name.
+  if (!Array.isArray(f.clients)) {
+    let c = f.client;
+    if (typeof c === "string" && c.trim().charAt(0) === "[") {
+      try { const p = JSON.parse(c); if (Array.isArray(p)) c = p; } catch (_) {}
+    }
+    f.clients = Array.isArray(c) ? c.filter(Boolean) : c ? [c] : [];
+  }
+  f.client =
+    f.clients[0] ||
+    (typeof f.client === "string" && f.client.charAt(0) !== "[" ? f.client : "");
   if (!Array.isArray(f.sectors)) f.sectors = f.sector ? [f.sector] : [];
   if (!Array.isArray(f.videoTypes)) f.videoTypes = f.videoType ? [f.videoType] : [];
   return f;
+};
+
+// Encode a clients[] array into the single `client` text column: a lone name
+// stays a plain string; 2+ names are stored as a JSON array (parsed back by
+// normalizeFilm). Lets co-branded films work without a schema change.
+LCF._encodeClient = function (clients) {
+  const arr = (Array.isArray(clients) ? clients : clients ? [clients] : [])
+    .map((s) => String(s).trim())
+    .filter(Boolean);
+  return arr.length > 1 ? JSON.stringify(arr) : arr[0] || "";
 };
 
 // Load the full catalog (baked films + any added).
@@ -125,13 +148,12 @@ LCF.loadFilms = async function () {
 
 // Persist a new film.
 LCF.addFilm = async function (entry) {
-  const film = {
-    client: "",
-    film: "",
-    sectors: [],
-    videoTypes: [],
-    ...entry,
-  };
+  const clients = Array.isArray(entry.clients)
+    ? entry.clients
+    : entry.client ? [entry.client] : [];
+  const film = { film: "", sectors: [], videoTypes: [], ...entry };
+  film.client = LCF._encodeClient(clients); // multi-client packs into `client`
+  delete film.clients; // no separate column
   if (LCF.hasSupabase()) {
     const res = await fetch(LCF.config.SUPABASE_URL + "/rest/v1/films", {
       method: "POST",
@@ -154,6 +176,11 @@ LCF.addFilm = async function (entry) {
 
 // Update an existing film's fields (used by the in-app editor).
 LCF.updateFilm = async function (id, patch) {
+  patch = { ...patch };
+  if ("clients" in patch) {
+    patch.client = LCF._encodeClient(patch.clients); // pack into `client`
+    delete patch.clients;
+  }
   if (LCF.hasSupabase()) {
     const res = await fetch(
       LCF.config.SUPABASE_URL + "/rest/v1/films?id=eq." + encodeURIComponent(id),
