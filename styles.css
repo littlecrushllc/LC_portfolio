@@ -270,8 +270,8 @@ body {
 .field span small { color: var(--muted); font-weight: 400; }
 .pick { display: flex; flex-wrap: wrap; gap: 6px; }
 .pick:empty::before { content: "none yet"; color: var(--muted); font-size: 12px; }
-.add-preview { display: flex; gap: 16px; margin: 6px 0 8px; }
-.add-preview img { width: 160px; aspect-ratio: 16/9; object-fit: cover; border-radius: 8px; background: var(--panel-2); flex-shrink: 0; }
+.add-preview { display: flex; align-items: flex-start; gap: 16px; margin: 6px 0 8px; }
+.add-preview img { width: 160px; height: 90px; aspect-ratio: 16/9; object-fit: cover; border-radius: 8px; background: var(--panel-2); flex-shrink: 0; align-self: flex-start; }
 .add-fields { flex: 1; }
 .add-error { color: var(--accent); font-size: 13px; margin: 4px 0 0; }
 .add-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
@@ -298,5 +298,5 @@ body {
   .grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
   .filter-meta { margin-left: 0; width: 100%; }
   .add-preview { flex-direction: column; }
-  .add-preview img { width: 100%; }
+  .add-preview img { width: 100%; height: auto; }
 }
