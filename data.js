@@ -92,18 +92,25 @@ LCF.normalizeFilm = function (f) {
 // Load the full catalog (baked films + any added).
 LCF.loadFilms = async function () {
   if (LCF.hasSupabase()) {
-    const res = await fetch(
-      LCF.config.SUPABASE_URL +
-        "/rest/v1/films?select=*&order=created_at.desc",
-      {
-        headers: {
-          apikey: LCF.config.SUPABASE_ANON_KEY,
-          Authorization: "Bearer " + LCF.config.SUPABASE_ANON_KEY,
-        },
-      }
-    );
-    if (!res.ok) throw new Error("Couldn't load films from the database.");
-    return (await res.json()).map(LCF.normalizeFilm);
+    // Try the live database first, but if it's unreachable (free-tier project
+    // paused, offline, etc.) fall through to the baked-in catalog.json so the
+    // shared portfolio always loads for viewing.
+    try {
+      const res = await fetch(
+        LCF.config.SUPABASE_URL +
+          "/rest/v1/films?select=*&order=created_at.desc",
+        {
+          headers: {
+            apikey: LCF.config.SUPABASE_ANON_KEY,
+            Authorization: "Bearer " + LCF.config.SUPABASE_ANON_KEY,
+          },
+        }
+      );
+      if (res.ok) return (await res.json()).map(LCF.normalizeFilm);
+      console.warn("Supabase returned", res.status, "— using catalog.json");
+    } catch (e) {
+      console.warn("Supabase unreachable — using catalog.json", e);
+    }
   }
   const data = await (await fetch("catalog.json?t=" + Date.now())).json(); // always fresh
   const base = data.films.map(LCF.normalizeFilm);
