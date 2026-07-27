@@ -166,6 +166,11 @@
     const anyFilter =
       FILTER_GROUPS.some((g) => state.selected[g.key].size) || state.search;
     $("#clearBtn").hidden = !anyFilter;
+
+    const share = $("#shareBtn");
+    share.hidden = list.length === 0;
+    share.textContent =
+      "⧉ Copy " + list.length + " link" + (list.length === 1 ? "" : "s");
   }
 
   function render() {
@@ -193,19 +198,82 @@
     showModal("#playerModal");
   }
 
-  async function copyLink(url) {
+  // Low-level clipboard write with a legacy execCommand fallback (older Safari /
+  // non-secure contexts where navigator.clipboard is unavailable).
+  async function copyText(text) {
     try {
-      await navigator.clipboard.writeText(url);
-      toast("Private link copied");
+      await navigator.clipboard.writeText(text);
     } catch (_) {
       const ta = document.createElement("textarea");
-      ta.value = url;
+      ta.value = text;
       document.body.appendChild(ta);
       ta.select();
       document.execCommand("copy");
       ta.remove();
-      toast("Private link copied");
     }
+  }
+
+  async function copyLink(url) {
+    await copyText(url);
+    toast("Private link copied");
+  }
+
+  // ---- share the current selection ----------------------------------------------
+  // A neat, paste-ready block for outreach emails — one stanza per film:
+  //   Film name / Client / link. The link is normalised to vimeo.com/ID/HASH?share=copy
+  // (any existing query string is dropped) so every line is clean and consistent.
+  function shareUrl(f) {
+    const base = (f.vimeoUrl || "").split("?")[0];
+    return base ? base + "?share=copy" : f.vimeoUrl || "";
+  }
+
+  function shareText(list) {
+    return list
+      .map((f) => [f.film, clientLabel(f), shareUrl(f)].filter(Boolean).join("\n"))
+      .join("\n\n");
+  }
+
+  // Rich (HTML) version for pasting into Gmail/Outlook: deliberately unstyled —
+  // no background, no colour, no font of its own — so it inherits the email's
+  // formatting instead of dragging the site's dark theme across. Film name bold,
+  // link live. (margin is the only style, purely for spacing between films.)
+  function shareHtml(list) {
+    return list
+      .map((f) => {
+        const url = shareUrl(f);
+        const client = clientLabel(f);
+        return (
+          '<p style="margin:0 0 12px 0">' +
+          "<strong>" + esc(f.film) + "</strong><br>" +
+          (client ? esc(client) + "<br>" : "") +
+          '<a href="' + esc(url) + '">' + esc(url) + "</a>" +
+          "</p>"
+        );
+      })
+      .join("");
+  }
+
+  async function copyShareLinks() {
+    const list = filtered();
+    if (!list.length) return;
+    const text = shareText(list);
+    try {
+      // Write plain + HTML together: email clients take the clean HTML (no dark
+      // background, inherits the email's font), plain-text targets get the list.
+      if (navigator.clipboard && navigator.clipboard.write && window.ClipboardItem) {
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            "text/plain": new Blob([text], { type: "text/plain" }),
+            "text/html": new Blob([shareHtml(list)], { type: "text/html" }),
+          }),
+        ]);
+      } else {
+        await copyText(text);
+      }
+    } catch (_) {
+      await copyText(text); // any failure (permissions, old browser) → plain text
+    }
+    toast("Copied " + list.length + " film" + (list.length === 1 ? "" : "s") + " to clipboard");
   }
 
   // ---- add / scan / edit modal ---------------------------------------------------
@@ -500,6 +568,7 @@
 
     $("#clearBtn").addEventListener("click", clearFilters);
     $("#emptyClear").addEventListener("click", clearFilters);
+    $("#shareBtn").addEventListener("click", copyShareLinks);
     $("#search").addEventListener("input", (e) => {
       state.search = e.target.value.trim().toLowerCase();
       render();
