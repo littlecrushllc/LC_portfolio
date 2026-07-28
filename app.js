@@ -22,7 +22,49 @@
     films: [],
     selected: { sectors: new Set(), videoTypes: new Set(), clients: new Set() },
     search: "",
+    picked: new Set(),   // film ids hand-picked for a custom, targeted share
+    pickedOnly: false,   // "Selected only" review view — show just the picks
   };
+
+  // ---- hand-picked selection (persists across filters, and across reloads) --------
+  const PICKS_KEY = "lcf_picks";
+  function loadPicks() {
+    try {
+      const a = JSON.parse(localStorage.getItem(PICKS_KEY) || "[]");
+      if (Array.isArray(a)) state.picked = new Set(a);
+    } catch (_) {}
+  }
+  function savePicks() {
+    try { localStorage.setItem(PICKS_KEY, JSON.stringify([...state.picked])); } catch (_) {}
+  }
+  // Drop any saved ids no longer in the catalog (a film was deleted since).
+  function prunePicks() {
+    const ids = new Set(state.films.map((f) => f.id));
+    let changed = false;
+    for (const id of state.picked) if (!ids.has(id)) { state.picked.delete(id); changed = true; }
+    if (changed) savePicks();
+  }
+  function togglePick(id) {
+    state.picked.has(id) ? state.picked.delete(id) : state.picked.add(id);
+    if (state.picked.size === 0) state.pickedOnly = false; // don't strand on an empty "Selected only"
+    savePicks();
+    render();
+  }
+  function clearPicks() {
+    state.picked.clear();
+    state.pickedOnly = false;
+    savePicks();
+    render();
+  }
+  function togglePickedOnly() {
+    state.pickedOnly = !state.pickedOnly;
+    render();
+  }
+  // What "Copy" shares: the hand-picked set if you've made one, else the shown list.
+  function shareList() {
+    if (state.picked.size) return state.films.filter((f) => state.picked.has(f.id));
+    return filtered();
+  }
 
   // Does any of a film's values for a group match the selected set?
   const anyMatch = (values, set) =>
@@ -87,7 +129,12 @@
     return matchesSearch(f);
   }
 
-  const filtered = () => state.films.filter(matches);
+  // "Selected only" ignores the filters/search and shows exactly your picks, so
+  // you can review the whole reel you've assembled before sharing.
+  const filtered = () =>
+    state.pickedOnly
+      ? state.films.filter((f) => state.picked.has(f.id))
+      : state.films.filter(matches);
 
   // Count films a chip would yield, respecting the OTHER groups' filters + search.
   function chipCount(groupKey, value) {
@@ -133,7 +180,8 @@
 
     list.forEach((f) => {
       const card = document.createElement("div");
-      card.className = "card";
+      const isPicked = state.picked.has(f.id);
+      card.className = "card" + (isPicked ? " picked" : "");
       const dur = fmtDuration(f.duration);
       const thumb = f.thumbnail
         ? '<img loading="lazy" src="' + esc(f.thumbnail) + '" alt="' + esc(f.film) + '" />'
@@ -143,10 +191,17 @@
         ' stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
         '<path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/>' +
         '<path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>';
+      const checkIcon =
+        '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"' +
+        ' stroke-width="3" stroke-linecap="round" stroke-linejoin="round">' +
+        '<polyline points="20 6 9 17 4 12"/></svg>';
       card.innerHTML =
         thumb +
         '<button class="c-copy" title="Copy private link" aria-label="Copy private link">' +
         copyIcon + "</button>" +
+        '<button class="c-pick' + (isPicked ? " on" : "") +
+        '" title="Select for a custom share" aria-label="Select for a custom share"' +
+        ' aria-pressed="' + isPicked + '">' + checkIcon + "</button>" +
         (dur ? '<span class="c-dur">' + dur + "</span>" : "") +
         '<div class="c-play"></div>' +
         '<div class="overlay">' +
@@ -158,6 +213,10 @@
         e.stopPropagation();
         copyLink(f.vimeoUrl);
       });
+      card.querySelector(".c-pick").addEventListener("click", (e) => {
+        e.stopPropagation();      // select, don't open the player
+        togglePick(f.id);
+      });
       grid.appendChild(card);
     });
 
@@ -167,10 +226,25 @@
       FILTER_GROUPS.some((g) => state.selected[g.key].size) || state.search;
     $("#clearBtn").hidden = !anyFilter;
 
+    // Share bar reflects the hand-picked set when there is one.
+    const nPicked = state.picked.size;
     const share = $("#shareBtn");
-    share.hidden = list.length === 0;
-    share.textContent =
-      "⧉ Copy " + list.length + " link" + (list.length === 1 ? "" : "s");
+    share.hidden = nPicked === 0 && list.length === 0;
+    share.textContent = nPicked
+      ? "⧉ Copy " + nPicked + " selected"
+      : "⧉ Copy " + list.length + " link" + (list.length === 1 ? "" : "s");
+
+    const pickClear = $("#pickClearBtn");
+    if (pickClear) {
+      pickClear.hidden = nPicked === 0;
+      pickClear.textContent = "Clear selection (" + nPicked + ")";
+    }
+    const pickOnly = $("#pickOnlyBtn");
+    if (pickOnly) {
+      pickOnly.hidden = nPicked === 0;
+      pickOnly.classList.toggle("active", state.pickedOnly);
+      pickOnly.textContent = state.pickedOnly ? "Show all" : "Selected only";
+    }
   }
 
   function render() {
@@ -254,7 +328,7 @@
   }
 
   async function copyShareLinks() {
-    const list = filtered();
+    const list = shareList();
     if (!list.length) return;
     const text = shareText(list);
     try {
@@ -569,6 +643,8 @@
     $("#clearBtn").addEventListener("click", clearFilters);
     $("#emptyClear").addEventListener("click", clearFilters);
     $("#shareBtn").addEventListener("click", copyShareLinks);
+    $("#pickClearBtn").addEventListener("click", clearPicks);
+    $("#pickOnlyBtn").addEventListener("click", togglePickedOnly);
     $("#search").addEventListener("input", (e) => {
       state.search = e.target.value.trim().toLowerCase();
       render();
@@ -581,7 +657,9 @@
     });
 
     try {
+      loadPicks();
       state.films = await LCF.loadFilms();
+      prunePicks();   // forget any picks whose film no longer exists
       render();
     } catch (e) {
       $("#grid").innerHTML =

@@ -172,6 +172,36 @@ body {
 .card:hover .c-copy { opacity: 1; }
 .card .c-copy:hover { background: var(--accent); color: var(--on-accent); }
 
+/* Select-for-share checkbox — top-right (copy is top-left). Reveals on hover
+   like the copy button when unpicked; stays visible + filled once picked. */
+.card .c-pick {
+  position: absolute;
+  top: 10px; right: 10px;
+  z-index: 3;
+  width: 30px; height: 30px;
+  border-radius: 7px;
+  border: 2px solid rgba(255,255,255,0.85);
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, background 0.15s, border-color 0.15s;
+}
+.card:hover .c-pick { opacity: 1; }
+.card .c-pick svg { opacity: 0; transition: opacity 0.12s; }   /* empty box when unpicked */
+.card .c-pick:hover { border-color: #fff; }
+.card .c-pick.on {
+  opacity: 1;                                                   /* always visible once picked */
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+.card .c-pick.on svg { opacity: 1; }
+/* Ring around a picked card so the selection reads at a glance across the grid. */
+.card.picked { box-shadow: inset 0 0 0 3px var(--accent); }
+.btn.btn-ghost.active { background: var(--accent); color: var(--on-accent); }
+
 .card .c-dur {
   position: absolute;
   top: 10px; right: 10px;
