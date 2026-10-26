@@ -330,3 +330,59 @@ body {
   .add-preview { flex-direction: column; }
   .add-preview img { width: 100%; height: auto; }
 }
+
+/* ---- awards ---- */
+.card .c-awards {
+  position: absolute;
+  top: 10px; left: 10px;
+  background: rgba(255,152,244,0.92);
+  color: var(--on-accent);
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+/* Player-modal award summary */
+.player-awards { padding: 0 20px 18px; border-top: 1px solid var(--line); margin-top: 2px; padding-top: 14px; }
+.pa-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
+.pa-title { font-weight: 600; font-size: 14px; }
+.pa-year { color: var(--muted); font-weight: 400; }
+.pa-muted { color: var(--muted); font-size: 13px; }
+.pa-actions { display: flex; gap: 8px; }
+.pa-line { color: var(--text); font-size: 13px; line-height: 1.5; }
+.pa-noms { color: var(--muted); margin-top: 3px; }
+
+/* Cabinet modal */
+.cabinet-card { max-width: 720px; padding: 22px 24px 24px; }
+.cabinet-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+.cabinet-title { margin: 0; font-size: 20px; }
+.cabinet-count { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+.cabinet-list { display: flex; flex-direction: column; gap: 2px; }
+.cab-row { padding: 12px 2px; border-bottom: 1px solid var(--line); }
+.cab-row:last-child { border-bottom: 0; }
+.cab-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.cab-name { font-weight: 600; }
+.cab-play { background: none; border: 0; color: var(--text); font-weight: 600; font-size: 15px; cursor: pointer; padding: 0; text-align: left; }
+.cab-play:hover { color: var(--accent); text-decoration: underline; }
+.cab-meta { color: var(--muted); font-size: 12px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.cab-line { color: var(--muted); font-size: 13px; line-height: 1.5; margin-top: 3px; }
+
+/* Per-film awards manager */
+.awards-card { max-width: 560px; padding: 24px; }
+.awards-list { display: flex; flex-direction: column; gap: 2px; margin: 10px 0 16px; max-height: 42vh; overflow: auto; }
+.aw-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; padding: 9px 2px; border-bottom: 1px solid var(--line); }
+.aw-main { font-size: 13px; line-height: 1.45; }
+.aw-tier { font-weight: 700; color: var(--accent); }
+.aw-sub { color: var(--muted); font-size: 12px; margin-top: 1px; }
+.aw-del { background: none; border: 0; color: var(--muted); font-size: 20px; line-height: 1; cursor: pointer; padding: 0 4px; }
+.aw-del:hover { color: #ff7a7a; }
+.aw-empty { color: var(--muted); font-size: 13px; padding: 8px 0; }
+.awards-add { display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--line); padding-top: 14px; }
+.aw-form-row { display: flex; gap: 8px; }
+.aw-form-row #awBody { flex: 1; }
+.awards-add input, .awards-add select {
+  background: var(--panel-2); border: 1px solid var(--line); color: var(--text);
+  border-radius: 8px; padding: 9px 11px; font-size: 13px; font-family: inherit;
+}
+.awards-add .aw-year { width: 80px; }

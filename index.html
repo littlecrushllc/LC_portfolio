@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
     <title>Little Crush Films — Work</title>
-    <link rel="stylesheet" href="styles.css?v=14" />
+    <link rel="stylesheet" href="styles.css?v=15" />
   </head>
   <body>
     <header class="topbar">
@@ -21,6 +21,7 @@
           placeholder="Search client or film…"
           autocomplete="off"
         />
+        <button id="cabinetBtn" class="btn" title="Every award & nomination, grouped by client">🏆 Awards</button>
         <button id="scanBtn" class="btn btn-primary" title="Check Vimeo for films not yet in the library">⟳ Scan Vimeo</button>
       </div>
     </header>
@@ -70,6 +71,7 @@
             <button id="copyLink" class="btn btn-primary">Copy private link</button>
           </div>
         </div>
+        <div class="player-awards" id="playerAwards" hidden></div>
       </div>
     </div>
 
@@ -125,9 +127,50 @@
       </div>
     </div>
 
+    <!-- Awards cabinet (all awards, grouped by client) -->
+    <div id="cabinetModal" class="modal" hidden>
+      <div class="modal-backdrop" data-close></div>
+      <div class="modal-card cabinet-card" role="dialog" aria-modal="true" aria-label="Awards">
+        <button class="modal-close" data-close aria-label="Close">&times;</button>
+        <div class="cabinet-head">
+          <div>
+            <h2 class="cabinet-title">🏆 Awards &amp; nominations</h2>
+            <p class="cabinet-count" id="cabinetCount"></p>
+          </div>
+          <button id="cabinetCopy" class="btn">⧉ Copy all</button>
+        </div>
+        <div class="cabinet-list" id="cabinetList"></div>
+      </div>
+    </div>
+
+    <!-- Per-film awards manager -->
+    <div id="awardsModal" class="modal" hidden>
+      <div class="modal-backdrop" data-close></div>
+      <div class="modal-card awards-card" role="dialog" aria-modal="true" aria-label="Manage awards">
+        <button class="modal-close" data-close aria-label="Close">&times;</button>
+        <h2 class="add-title">Awards</h2>
+        <p class="add-hint" id="awardsFilmLabel"></p>
+        <div class="awards-list" id="awardsList"></div>
+        <div class="awards-add">
+          <div class="aw-form-row">
+            <input id="awBody" type="text" placeholder="Award body (e.g. The Telly Awards)" />
+            <select id="awTier">
+              <option>Gold</option><option>Silver</option><option>Bronze</option>
+              <option selected>Winner</option><option>Finalist</option><option>Nominee</option>
+              <option>Excellence</option><option>Distinction</option><option>Merit</option>
+              <option>Grand Winner</option>
+            </select>
+            <input id="awYear" type="number" placeholder="Year" class="aw-year" />
+          </div>
+          <input id="awTitle" type="text" placeholder="Category / title (optional) — e.g. GOLD: General B2B" />
+          <button id="awAdd" class="btn btn-primary">+ Add award</button>
+        </div>
+      </div>
+    </div>
+
     <div id="toast" class="toast" hidden></div>
 
-    <script src="data.js?v=15"></script>
-    <script src="app.js?v=17"></script>
+    <script src="data.js?v=16"></script>
+    <script src="app.js?v=18"></script>
   </body>
 </html>

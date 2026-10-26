@@ -20,6 +20,7 @@
 
   const state = {
     films: [],
+    awards: [],
     selected: { sectors: new Set(), videoTypes: new Set(), clients: new Set() },
     search: "",
     picked: new Set(),   // film ids hand-picked for a custom, targeted share
@@ -89,6 +90,187 @@
     t.hidden = false;
     clearTimeout(toast._t);
     toast._t = setTimeout(() => (t.hidden = true), 1800);
+  }
+
+  // ---- awards -------------------------------------------------------------------
+  // The cabinet is a keeping-tabs / copy-paste record: a film's (or client's)
+  // awards folded into compact counts by body — "14× Telly Awards, 2× Digiday".
+  const cleanBody = (b) =>
+    String(b || "")
+      .replace(/^\s*20\d\d\s+/, "")               // drop a leading year ("2025 Global…")
+      .replace(/\s*\[[^\]]*\]/g, "")               // drop "[Global Edition]" tags
+      .replace(/\s*\(Native Advertising Institute\)/i, "")
+      .replace(/^The\s+/i, "")                     // "The Telly Awards" → "Telly Awards"
+      .trim();
+
+  const isWin = (a) => !/finalist|nominee/i.test(a.tier || "");
+
+  function awardsForFilm(id) {
+    const key = String(id);
+    return state.awards.filter((a) => (a.film_ids || []).map(String).includes(key));
+  }
+
+  function awardsByClient() {
+    const groups = new Map();
+    state.awards.forEach((a) => {
+      const c = (a.client && String(a.client).trim()) || "—";
+      if (!groups.has(c)) groups.set(c, []);
+      groups.get(c).push(a);
+    });
+    return groups;
+  }
+
+  // Fold a list into counts by body (wins first), plus a year label.
+  function summarizeAwards(list) {
+    const bodies = (arr) => {
+      const m = new Map();
+      arr.forEach((a) => { const b = cleanBody(a.award_body); m.set(b, (m.get(b) || 0) + 1); });
+      return [...m.entries()].sort((x, y) => y[1] - x[1]).map(([b, n]) => n + "× " + b);
+    };
+    const wins = list.filter(isWin);
+    const noms = list.filter((a) => !isWin(a));
+    const years = [...new Set(list.map((a) => a.year).filter(Boolean))].sort();
+    const yearLabel = years.length
+      ? (years[0] === years[years.length - 1] ? "" + years[0] : years[0] + "–" + years[years.length - 1])
+      : "";
+    return { total: list.length, winN: wins.length, nomN: noms.length,
+      winLine: bodies(wins).join(", "), nomLine: bodies(noms).join(", "), yearLabel };
+  }
+
+  // Plain-text block for the clipboard.
+  function awardsTextFor(label, list) {
+    const s = summarizeAwards(list);
+    const out = [label + " — " + s.total + " award" + (s.total === 1 ? "" : "s") +
+      (s.yearLabel ? " (" + s.yearLabel + ")" : "")];
+    if (s.winLine) out.push("Wins: " + s.winLine);
+    if (s.nomLine) out.push("Finalist/Nominee: " + s.nomLine);
+    return out.join("\n");
+  }
+
+  // The award summary shown under a film in the player modal.
+  function renderPlayerAwards(f) {
+    const box = $("#playerAwards");
+    if (!box) return;
+    const list = awardsForFilm(f.id);
+    if (!list.length) {
+      box.hidden = false;
+      box.innerHTML = LCF.awardsEditable()
+        ? '<div class="pa-head"><span class="pa-muted">No awards logged</span>' +
+          '<button class="btn btn-ghost" id="paManage">+ Add</button></div>'
+        : "";
+      if (!LCF.awardsEditable()) box.hidden = true;
+      const m0 = $("#paManage"); if (m0) m0.onclick = () => openAwardsManager(f);
+      return;
+    }
+    const s = summarizeAwards(list);
+    box.hidden = false;
+    box.innerHTML =
+      '<div class="pa-head"><span class="pa-title">🏆 ' + s.total + " award" + (s.total === 1 ? "" : "s") +
+      (s.yearLabel ? ' <span class="pa-year">· ' + esc(s.yearLabel) + "</span>" : "") + "</span>" +
+      '<span class="pa-actions"><button class="btn btn-ghost" id="paCopy">Copy</button>' +
+      (LCF.awardsEditable() ? '<button class="btn btn-ghost" id="paManage">Manage</button>' : "") +
+      "</span></div>" +
+      (s.winLine ? '<div class="pa-line">' + esc(s.winLine) + "</div>" : "") +
+      (s.nomLine ? '<div class="pa-line pa-noms">Finalist / Nominee: ' + esc(s.nomLine) + "</div>" : "");
+    const label = (clientLabel(f) ? clientLabel(f) + " — " : "") + f.film;
+    $("#paCopy").onclick = async () => { await copyText(awardsTextFor(label, list)); toast("Awards copied"); };
+    const manage = $("#paManage");
+    if (manage) manage.onclick = () => openAwardsManager(f);
+  }
+
+  // ---- per-film awards manager (add / remove) -----------------------------------
+  let awardsFilm = null;
+  function openAwardsManager(f) {
+    if (!LCF.awardsEditable()) { toast("Editing awards needs the shared database."); return; }
+    awardsFilm = f;
+    renderAwardsManager();
+    $("#awYear").value = new Date().getFullYear();
+    showModal("#awardsModal");
+  }
+  function renderAwardsManager() {
+    const f = awardsFilm; if (!f) return;
+    $("#awardsFilmLabel").textContent = (clientLabel(f) ? clientLabel(f) + " — " : "") + f.film;
+    const list = awardsForFilm(f.id).slice().sort((a, b) => (b.year || 0) - (a.year || 0));
+    const box = $("#awardsList");
+    box.innerHTML = list.length
+      ? list.map((a) =>
+          '<div class="aw-row">' +
+          '<div class="aw-main"><span class="aw-tier">' + esc(a.tier || "") + "</span> " +
+          esc(a.title || a.award_body || "") +
+          '<div class="aw-sub">' + esc(a.award_body || "") + (a.year ? " · " + a.year : "") + "</div></div>" +
+          (a.id != null ? '<button class="aw-del" title="Remove" data-id="' + esc(a.id) + '">&times;</button>' : "") +
+          "</div>"
+        ).join("")
+      : '<div class="aw-empty">No awards logged for this film yet.</div>';
+    box.querySelectorAll(".aw-del").forEach((b) =>
+      b.addEventListener("click", () => deleteAwardRow(b.getAttribute("data-id")))
+    );
+  }
+  async function reloadAwards() {
+    state.awards = await LCF.loadAwards();
+    if (awardsFilm) renderAwardsManager();
+    if (awardsFilm && !$("#playerModal").hidden) renderPlayerAwards(awardsFilm);
+    render();
+  }
+  async function deleteAwardRow(id) {
+    try { await LCF.deleteAward(id); await reloadAwards(); toast("Award removed"); }
+    catch (e) { toast("Couldn't remove: " + (e && e.message ? e.message : e)); }
+  }
+  async function addAwardFromForm() {
+    const f = awardsFilm; if (!f) return;
+    const body = $("#awBody").value.trim();
+    const title = $("#awTitle").value.trim();
+    const tier = $("#awTier").value.trim();
+    const year = parseInt($("#awYear").value, 10);
+    if (!body) { toast("Add the award body (e.g. The Telly Awards)"); return; }
+    try {
+      await LCF.addAward({
+        source: "lc", award_body: body, title: title || null, tier: tier || "Winner",
+        year: isNaN(year) ? null : year,
+        client: (f.clients && f.clients[0]) || f.client || null,
+        film_label: f.film, film_ids: [String(f.id)],
+      });
+      $("#awBody").value = ""; $("#awTitle").value = "";
+      await reloadAwards();
+      toast("Award added");
+    } catch (e) { toast("Couldn't add: " + (e && e.message ? e.message : e)); }
+  }
+
+  // ---- the cabinet (all awards, grouped by client — keeping tabs) ---------------
+  function openCabinet() {
+    const rows = [...awardsByClient().entries()]
+      .map(([c, list]) => ({ c, list, n: list.length, y: Math.max(0, ...list.map((a) => a.year || 0)) }))
+      .sort((x, y) => y.y - x.y || y.n - x.n);
+    $("#cabinetCount").textContent =
+      state.awards.length + " awards across " + rows.length + " clients";
+    const box = $("#cabinetList");
+    box.innerHTML = rows.map((r) => {
+      const s = summarizeAwards(r.list);
+      const fid = (r.list.find((a) => (a.film_ids || []).length) || {}).film_ids;
+      const film = fid && fid.length ? state.films.find((f) => String(f.id) === String(fid[0])) : null;
+      const head = film
+        ? '<button class="cab-play" data-fid="' + esc(film.id) + '" title="Play">' + esc(r.c) + "</button>"
+        : '<span class="cab-name">' + esc(r.c) + "</span>";
+      const line = [s.winLine, s.nomLine ? "Finalist/Nominee: " + s.nomLine : ""].filter(Boolean).join(" · ");
+      return '<div class="cab-row"><div class="cab-top">' + head +
+        '<span class="cab-meta">' + r.n + (s.yearLabel ? " · " + esc(s.yearLabel) : "") + "</span></div>" +
+        '<div class="cab-line">' + esc(line) + "</div></div>";
+    }).join("");
+    box.querySelectorAll(".cab-play").forEach((b) =>
+      b.addEventListener("click", () => {
+        const film = state.films.find((f) => String(f.id) === b.getAttribute("data-fid"));
+        if (film) { hideModal("#cabinetModal"); openPlayer(film); }
+      })
+    );
+    showModal("#cabinetModal");
+  }
+  async function copyCabinet() {
+    const rows = [...awardsByClient().entries()]
+      .map(([c, list]) => ({ c, list, y: Math.max(0, ...list.map((a) => a.year || 0)) }))
+      .sort((x, y) => y.y - x.y)
+      .map((r) => awardsTextFor(r.c, r.list));
+    await copyText("Little Crush Films — Awards\n\n" + rows.join("\n\n"));
+    toast("All awards copied");
   }
 
   // Distinct values for a field, folding case/spacing variants into one canonical
@@ -203,6 +385,9 @@
         '" title="Select for a custom share" aria-label="Select for a custom share"' +
         ' aria-pressed="' + isPicked + '">' + checkIcon + "</button>" +
         (dur ? '<span class="c-dur">' + dur + "</span>" : "") +
+        (awardsForFilm(f.id).length
+          ? '<span class="c-awards" title="' + awardsForFilm(f.id).length + ' awards">🏆 ' + awardsForFilm(f.id).length + "</span>"
+          : "") +
         '<div class="c-play"></div>' +
         '<div class="overlay">' +
         '<div class="c-client">' + esc(clientLabel(f)) + "</div>" +
@@ -269,6 +454,7 @@
     $("#playerFilm").textContent = f.film;
     $("#copyLink").onclick = () => copyLink(f.vimeoUrl);
     $("#editFilm").onclick = () => openEditor(f);
+    renderPlayerAwards(f);
     showModal("#playerModal");
   }
 
@@ -616,7 +802,12 @@
 
     wireModalClose("#playerModal");
     wireModalClose("#addModal");
+    wireModalClose("#cabinetModal");
+    wireModalClose("#awardsModal");
     $("#scanBtn").addEventListener("click", runScan);
+    $("#cabinetBtn").addEventListener("click", openCabinet);
+    $("#cabinetCopy").addEventListener("click", copyCabinet);
+    $("#awAdd").addEventListener("click", addAwardFromForm);
     $("#skipFilm").addEventListener("click", skipScan);
     $("#saveFilm").addEventListener("click", saveFilm);
     $("#refreshThumb").addEventListener("click", refreshThumbnail);
@@ -653,12 +844,15 @@
       if (e.key === "Escape") {
         hideModal("#playerModal");
         hideModal("#addModal");
+        hideModal("#cabinetModal");
+        hideModal("#awardsModal");
       }
     });
 
     try {
       loadPicks();
       state.films = await LCF.loadFilms();
+      state.awards = await LCF.loadAwards().catch(() => []);
       prunePicks();   // forget any picks whose film no longer exists
       render();
     } catch (e) {

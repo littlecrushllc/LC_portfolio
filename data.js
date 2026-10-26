@@ -233,3 +233,65 @@ LCF.localCount = () => LCF._localAdded().length;
 LCF.removeLocal = function (vimeoUrl) {
   LCF._saveLocal(LCF._localAdded().filter((f) => f.vimeoUrl !== vimeoUrl));
 };
+
+// ---- Awards --------------------------------------------------------------------
+// A separate `awards` table (see supabase/schema.sql). Each award may link to
+// several catalog films via film_ids[] (every cut of a project). Reads fall back
+// to the baked awards.json so the cabinet always shows; editing needs the DB.
+LCF._awardHeaders = () => ({
+  apikey: LCF.config.SUPABASE_ANON_KEY,
+  Authorization: "Bearer " + LCF.config.SUPABASE_ANON_KEY,
+  "Content-Type": "application/json",
+});
+LCF.awardsEditable = () => LCF.hasSupabase();
+
+LCF.loadAwards = async function () {
+  if (LCF.hasSupabase()) {
+    try {
+      const res = await fetch(
+        LCF.config.SUPABASE_URL + "/rest/v1/awards?select=*&order=year.desc.nullslast",
+        { headers: { apikey: LCF.config.SUPABASE_ANON_KEY, Authorization: "Bearer " + LCF.config.SUPABASE_ANON_KEY } }
+      );
+      if (res.ok) return await res.json();
+      console.warn("awards table returned", res.status, "— using awards.json");
+    } catch (e) {
+      console.warn("awards unreachable — using awards.json", e);
+    }
+  }
+  try {
+    const d = await (await fetch("awards.json?t=" + Date.now())).json();
+    return Array.isArray(d.awards) ? d.awards : [];
+  } catch (e) {
+    return [];
+  }
+};
+
+LCF.addAward = async function (a) {
+  if (!LCF.hasSupabase()) throw new Error("Adding awards needs the shared database.");
+  const res = await fetch(LCF.config.SUPABASE_URL + "/rest/v1/awards", {
+    method: "POST",
+    headers: { ...LCF._awardHeaders(), Prefer: "return=representation" },
+    body: JSON.stringify(a),
+  });
+  if (!res.ok) throw new Error("Couldn't save the award.");
+  return (await res.json())[0];
+};
+
+LCF.updateAward = async function (id, patch) {
+  if (!LCF.hasSupabase()) throw new Error("Editing awards needs the shared database.");
+  const res = await fetch(
+    LCF.config.SUPABASE_URL + "/rest/v1/awards?id=eq." + encodeURIComponent(id),
+    { method: "PATCH", headers: { ...LCF._awardHeaders(), Prefer: "return=representation" }, body: JSON.stringify(patch) }
+  );
+  if (!res.ok) throw new Error("Couldn't update the award.");
+  return (await res.json())[0];
+};
+
+LCF.deleteAward = async function (id) {
+  if (!LCF.hasSupabase()) throw new Error("Deleting awards needs the shared database.");
+  const res = await fetch(
+    LCF.config.SUPABASE_URL + "/rest/v1/awards?id=eq." + encodeURIComponent(id),
+    { method: "DELETE", headers: LCF._awardHeaders() }
+  );
+  if (!res.ok) throw new Error("Couldn't delete the award.");
+};
