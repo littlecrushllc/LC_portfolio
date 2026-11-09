@@ -26,6 +26,7 @@
     picked: new Set(),   // film ids hand-picked for a custom, targeted share
     pickedOnly: false,   // "Selected only" review view — show just the picks
     sectorPage: null,    // a sector name when the page is a shareable sector view
+    sectorGroup: null,   // "sectors" | "videoTypes" — which facet the page is on
     grades: {},          // PRIVATE star grades {film_id: 1..5}, localStorage only
     grader: false,       // internal grader mode (never on public / sector pages)
   };
@@ -637,12 +638,70 @@
       if (hit) { match = hit; break; }
     }
     state.sectorPage = match;
+    state.sectorGroup = group;
     state.selected[group] = new Set([wantKey]);
     document.body.classList.add("sector-page");
+    const label = $("#sectorBadgeLabel");
+    if (label) label.textContent = match;
     const badge = $("#sectorBadge");
-    if (badge) { badge.textContent = match; badge.hidden = false; }
+    if (badge) badge.hidden = false;
+    wireSectorBadge();
     document.title = match + " — Little Crush Films";
     return true;
+  }
+
+  // The category badge (top-right of every sector/type page) is a dropdown that
+  // jumps to any other page. We only list sectors / types that actually have a
+  // featured (public) film, so a visitor never lands on an empty page.
+  function sectorPageFacets() {
+    const secs = new Map(), types = new Map();
+    for (const f of state.films) {
+      if (!f.featured) continue;
+      (f.sectors || []).forEach((s) => { if (s) secs.set(LCF.canonKey(s), s); });
+      (f.videoTypes || []).forEach((t) => { if (t) types.set(LCF.canonKey(t), t); });
+    }
+    const vals = (m) => [...m.values()].sort((a, b) => a.localeCompare(b));
+    return { sectors: vals(secs), types: vals(types) };
+  }
+
+  function renderSectorMenu() {
+    const menu = $("#sectorMenu");
+    if (!menu) return;
+    const { sectors, types } = sectorPageFacets();
+    const curKey = state.sectorPage ? LCF.canonKey(state.sectorPage) : "";
+    const item = (name, group) => {
+      const isCur = group === state.sectorGroup && LCF.canonKey(name) === curKey;
+      return '<button class="sm-item' + (isCur ? " current" : "") + '" role="menuitem"' +
+        (isCur ? ' aria-current="true"' : "") +
+        ' data-group="' + group + '" data-name="' + esc(name) + '">' +
+        '<span>' + esc(name) + "</span>" +
+        (isCur ? '<span class="sm-tick" aria-hidden="true">●</span>' : "") + "</button>";
+    };
+    let html = "";
+    if (sectors.length) html += '<div class="sm-head">Sectors</div>' + sectors.map((s) => item(s, "sectors")).join("");
+    if (types.length) html += '<div class="sm-head">Films by type</div>' + types.map((t) => item(t, "videoTypes")).join("");
+    menu.innerHTML = html;
+    menu.querySelectorAll(".sm-item").forEach((btn) => {
+      btn.onclick = () => {
+        if (btn.classList.contains("current")) return;
+        const param = btn.dataset.group === "videoTypes" ? "type" : "sector";
+        location.search = "?" + param + "=" + encodeURIComponent(btn.dataset.name);
+      };
+    });
+  }
+
+  let _sectorBadgeWired = false;
+  function wireSectorBadge() {
+    renderSectorMenu();
+    if (_sectorBadgeWired) return;
+    const badge = $("#sectorBadge"), btn = $("#sectorBadgeBtn"), menu = $("#sectorMenu");
+    if (!btn || !menu) return;
+    _sectorBadgeWired = true;
+    const close = () => { menu.hidden = true; btn.setAttribute("aria-expanded", "false"); badge.classList.remove("open"); };
+    const open = () => { menu.hidden = false; btn.setAttribute("aria-expanded", "true"); badge.classList.add("open"); };
+    btn.addEventListener("click", (e) => { e.stopPropagation(); menu.hidden ? open() : close(); });
+    document.addEventListener("click", (e) => { if (!badge.contains(e.target)) close(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
   }
 
   // A single sector card (no pick/copy affordances — this is an external view).

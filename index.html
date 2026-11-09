@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
     <title>Little Crush Films — Work</title>
-    <link rel="stylesheet" href="styles.css?v=19" />
+    <link rel="stylesheet" href="styles.css?v=20" />
   </head>
   <body>
     <header class="topbar">
@@ -30,7 +30,13 @@
         <button id="gradeExport" class="btn" title="Download your grades as CSV (private backup)">Export</button>
         <button id="gradePublish" class="btn btn-primary" title="Publish the ≥3★ selection + order to the public pages (no scores)">Publish featured</button>
       </div>
-      <div class="sector-badge" id="sectorBadge" hidden></div>
+      <div class="sector-badge" id="sectorBadge" hidden>
+        <button class="sector-badge-btn" id="sectorBadgeBtn" type="button" aria-haspopup="true" aria-expanded="false" title="Browse other categories">
+          <span id="sectorBadgeLabel"></span>
+          <span class="sb-caret" aria-hidden="true">▾</span>
+        </button>
+        <div class="sector-menu" id="sectorMenu" role="menu" hidden></div>
+      </div>
     </header>
 
     <section class="filters" id="filters">
@@ -188,6 +194,6 @@
     <div id="toast" class="toast" hidden></div>
 
     <script src="data.js?v=17"></script>
-    <script src="app.js?v=23"></script>
+    <script src="app.js?v=24"></script>
   </body>
 </html>
