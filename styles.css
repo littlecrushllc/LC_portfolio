@@ -346,8 +346,8 @@ body {
 }
 /* Player-modal description + criteria chips (understated, under the title) */
 .player-sub { padding: 0 20px 16px; }
-.player-desc { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
-.player-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.player-desc { margin: 12px 0 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+.player-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; }
 .player-chip { font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 2px 9px; }
 
 /* Player-modal award summary */

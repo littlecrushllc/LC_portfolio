@@ -156,12 +156,14 @@
     const desc = (f.description || "").trim();
     const chips = [].concat(f.sectors || [], f.videoTypes || []).filter(Boolean);
     let html = "";
-    if (desc) html += '<p class="player-desc">' + esc(desc) + "</p>";
+    // Chips sit directly under the title; the description sits just above the
+    // awards block so the two read as a set.
     if (chips.length)
       html +=
         '<div class="player-chips">' +
         chips.map((c) => '<span class="player-chip">' + esc(c) + "</span>").join("") +
         "</div>";
+    if (desc) html += '<p class="player-desc">' + esc(desc) + "</p>";
     sub.innerHTML = html;
     sub.hidden = !html;
   }
