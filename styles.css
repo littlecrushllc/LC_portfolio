@@ -374,6 +374,20 @@ body.sector-page main { padding: 0; margin: 0; }
 .grid.sector-fill.fit .sector-row { flex: 1 1 0; }
 .grid.sector-fill .card { flex: 1 1 0; min-width: 0; height: 100%; aspect-ratio: auto; border-radius: 6px; }
 
+/* Private grading — internal tool only; nothing here renders on public/sector pages */
+.grader-tools { display: flex; align-items: center; gap: 8px; }
+.player-grade { display: flex; align-items: center; gap: 10px; padding: 12px 20px 0; }
+.player-grade .pg-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+.player-grade .pg-stars { display: inline-flex; gap: 2px; }
+.player-grade .pg-star { background: none; border: none; cursor: pointer; font-size: 20px; line-height: 1; color: #3a3a45; padding: 0 1px; }
+.player-grade .pg-star.on, .player-grade .pg-star:hover { color: #f5c518; }
+.player-grade .pg-clear { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 12px; text-decoration: underline; }
+.player-grade .pg-hint { color: var(--muted); font-size: 12px; font-style: italic; }
+.card .c-grade { position: absolute; top: 10px; left: 10px; font-size: 11px; font-weight: 700; font-family: var(--mono, monospace); padding: 2px 7px; border-radius: 10px; background: rgba(0,0,0,0.62); z-index: 2; }
+.card .c-grade.ok { color: #7dd87d; }
+.card .c-grade.low { color: #f0a35e; }
+.card .c-grade.none { color: var(--muted); }
+
 /* Player-modal award summary */
 .player-awards { padding: 0 20px 18px; border-top: 1px solid var(--line); margin-top: 2px; padding-top: 14px; }
 .pa-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 6px; }

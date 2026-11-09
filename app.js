@@ -26,7 +26,115 @@
     picked: new Set(),   // film ids hand-picked for a custom, targeted share
     pickedOnly: false,   // "Selected only" review view — show just the picks
     sectorPage: null,    // a sector name when the page is a shareable sector view
+    grades: {},          // PRIVATE star grades {film_id: 1..5}, localStorage only
+    grader: false,       // internal grader mode (never on public / sector pages)
   };
+
+  // ---- PRIVATE grading (Route A) -------------------------------------------------
+  // Star grades live ONLY in this browser's localStorage and the exportable CSV —
+  // never in the shared database, so clients can never read what we scored their
+  // films. Grading drives a score-free "featured + rank" signal we publish to the
+  // DB (LCF.publishFeatured); the public pages read only that.
+  const GRADES_KEY = "lcf_grades";
+  function loadGrades() {
+    try { const o = JSON.parse(localStorage.getItem(GRADES_KEY) || "{}"); return o && typeof o === "object" ? o : {}; }
+    catch (e) { return {}; }
+  }
+  function saveGrades() { try { localStorage.setItem(GRADES_KEY, JSON.stringify(state.grades)); } catch (e) {} }
+  function gradeOf(id) { const v = state.grades[String(id)]; return v ? +v : 0; }
+  function setGrade(id, stars) {
+    id = String(id);
+    if (stars >= 1 && stars <= 5) state.grades[id] = stars; else delete state.grades[id];
+    saveGrades();
+  }
+  // True only in the internal tool — never on a sector/type page or for a visitor.
+  function graderMode() { return state.grader && !state.sectorPage; }
+  // Public pages (and any non-grader visitor) see only the published featured set.
+  function publicView() { return !!state.sectorPage || !state.grader; }
+
+  // RFC-ish CSV parser: handles quoted fields, embedded commas, "" escapes.
+  function parseCSV(text) {
+    const rows = []; let field = "", row = [], inQ = false;
+    const pushF = () => { row.push(field); field = ""; };
+    const pushR = () => { pushF(); rows.push(row); row = []; };
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i];
+      if (inQ) {
+        if (c === '"') { if (text[i + 1] === '"') { field += '"'; i++; } else inQ = false; }
+        else field += c;
+      } else if (c === '"') inQ = true;
+      else if (c === ",") pushF();
+      else if (c === "\n") pushR();
+      else if (c !== "\r") field += c;
+    }
+    if (field.length || row.length) pushR();
+    return rows;
+  }
+
+  // Import grades from a CSV (film_id,stars,… — header optional). Merges in.
+  function importGradesFromText(text) {
+    const rows = parseCSV(text);
+    if (!rows.length) { toast("Nothing to import."); return; }
+    let start = 0, idCol = 0, starCol = 1;
+    const head = rows[0].map((s) => String(s).trim().toLowerCase());
+    const hi = head.indexOf("film_id"), hs = head.indexOf("stars");
+    if (hi >= 0 && hs >= 0) { idCol = hi; starCol = hs; start = 1; }
+    let added = 0;
+    for (let i = start; i < rows.length; i++) {
+      const r = rows[i]; if (!r) continue;
+      const id = String(r[idCol] || "").trim();
+      const stars = parseInt(String(r[starCol] || "").trim(), 10);
+      if (id && stars >= 1 && stars <= 5) { state.grades[id] = stars; added++; }
+    }
+    saveGrades();
+    state.grader = true;
+    document.body.classList.add("grader");
+    const gt = $("#graderTools"); if (gt) gt.hidden = false;
+    toast("Imported " + added + " grades");
+    render();
+  }
+  // Download the private grades as a CSV (your durable backup / cross-device file).
+  function exportGrades() {
+    const byId = new Map(state.films.map((f) => [String(f.id), f]));
+    const q = (s) => '"' + String(s == null ? "" : s).replace(/"/g, '""') + '"';
+    const ids = Object.keys(state.grades).sort((a, b) => state.grades[b] - state.grades[a]);
+    const lines = ["film_id,stars,title,client"];
+    ids.forEach((id) => {
+      const f = byId.get(id) || {};
+      lines.push([q(id), state.grades[id], q(f.film || f.title || ""), q(clientLabel(f) || f.client || "")].join(","));
+    });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([lines.join("\n")], { type: "text/csv" }));
+    a.download = "film-grades.csv";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+  // Publish ONLY the score-free featured(≥3★)+rank signal to the shared DB.
+  async function publishFeatured() {
+    const btn = $("#gradePublish");
+    const featured = state.films
+      .map((f) => ({ f, g: gradeOf(f.id) }))
+      .filter((x) => x.g >= 3)
+      .sort((a, b) => b.g - a.g || String(a.f.film || "").localeCompare(String(b.f.film || "")));
+    const rankMap = new Map();
+    featured.forEach((x, i) => rankMap.set(String(x.f.id), i + 1));
+    const rows = state.films.map((f) => ({
+      id: String(f.id),
+      featured: gradeOf(f.id) >= 3,
+      rank: rankMap.has(String(f.id)) ? rankMap.get(String(f.id)) : null,
+    }));
+    if (btn) { btn.disabled = true; btn.textContent = "Publishing…"; }
+    try {
+      await LCF.publishFeatured(rows);
+      state.films = await LCF.loadFilms();
+      render();
+      toast("Published " + featured.length + " featured films");
+    } catch (e) {
+      toast(e && e.message ? e.message : "Publish failed");
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = "Publish featured"; }
+    }
+  }
 
   // ---- hand-picked selection (persists across filters, and across reloads) --------
   const PICKS_KEY = "lcf_picks";
@@ -167,6 +275,25 @@
     if (desc) html += '<p class="player-desc">' + esc(desc) + "</p>";
     sub.innerHTML = html;
     sub.hidden = !html;
+  }
+
+  // Private star grader in the player — only in the internal tool, never public.
+  function renderPlayerGrade(f) {
+    const box = $("#playerGrade");
+    if (!box) return;
+    if (!graderMode()) { box.hidden = true; box.innerHTML = ""; return; }
+    const g = gradeOf(f.id);
+    let html = '<span class="pg-label">Grade</span><span class="pg-stars">';
+    for (let s = 1; s <= 5; s++)
+      html += '<button class="pg-star' + (s <= g ? " on" : "") + '" data-s="' + s + '" aria-label="' + s + ' star">★</button>';
+    html += "</span>" + (g ? '<button class="pg-clear">clear</button>' : '<span class="pg-hint">not graded</span>');
+    box.innerHTML = html;
+    box.hidden = false;
+    box.querySelectorAll(".pg-star").forEach((btn) => {
+      btn.onclick = () => { const s = +btn.dataset.s; setGrade(f.id, s === gradeOf(f.id) ? 0 : s); renderPlayerGrade(f); };
+    });
+    const clr = box.querySelector(".pg-clear");
+    if (clr) clr.onclick = () => { setGrade(f.id, 0); renderPlayerGrade(f); };
   }
 
   // The award summary shown under a film in the player modal.
@@ -335,10 +462,26 @@
 
   // "Selected only" ignores the filters/search and shows exactly your picks, so
   // you can review the whole reel you've assembled before sharing.
+  // The ordered pool a view draws from, BEFORE the user's chip/search filters:
+  //  • public (sector/type pages + any non-grader visitor): only films we've
+  //    published as featured (≥3★), best-first by rank — never <3★, never scores.
+  //    Falls back to all films until the first Publish, so pages never go empty.
+  //  • grader: every film, best-first by our private stars.
+  function baseList() {
+    const all = state.films;
+    if (publicView()) {
+      const featured = all.filter((f) => f.featured);
+      const pool = featured.length ? featured : all; // graceful pre-publish fallback
+      return pool.slice().sort((a, b) => (a.rank == null ? 1e9 : a.rank) - (b.rank == null ? 1e9 : b.rank));
+    }
+    return all.slice().sort(
+      (a, b) => gradeOf(b.id) - gradeOf(a.id) || String(a.film || "").localeCompare(String(b.film || ""))
+    );
+  }
   const filtered = () =>
     state.pickedOnly
-      ? state.films.filter((f) => state.picked.has(f.id))
-      : state.films.filter(matches);
+      ? baseList().filter((f) => state.picked.has(f.id))
+      : baseList().filter(matches);
 
   // Count films a chip would yield, respecting the OTHER groups' filters + search.
   function chipCount(groupKey, value) {
@@ -409,6 +552,10 @@
         (dur ? '<span class="c-dur">' + dur + "</span>" : "") +
         (awardsForFilm(f.id).length
           ? '<span class="c-awards" title="' + awardsForFilm(f.id).length + ' awards">🏆 ' + awardsForFilm(f.id).length + "</span>"
+          : "") +
+        (graderMode()
+          ? '<span class="c-grade' + (gradeOf(f.id) >= 3 ? " ok" : gradeOf(f.id) ? " low" : " none") + '">' +
+            (gradeOf(f.id) ? "★" + gradeOf(f.id) : "—") + "</span>"
           : "") +
         '<div class="c-play"></div>' +
         '<div class="overlay">' +
@@ -576,6 +723,7 @@
     $("#playerFilm").textContent = f.film;
     $("#copyLink").onclick = () => copyLink(f.vimeoUrl);
     $("#editFilm").onclick = () => openEditor(f);
+    renderPlayerGrade(f);
     renderPlayerSub(f);
     renderPlayerAwards(f);
     showModal("#playerModal");
@@ -961,6 +1109,17 @@
 
     $("#clearBtn").addEventListener("click", clearFilters);
     $("#emptyClear").addEventListener("click", clearFilters);
+    $("#gradeImport").addEventListener("click", () => $("#gradeFile").click());
+    $("#gradeFile").addEventListener("change", (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => importGradesFromText(String(reader.result || ""));
+      reader.readAsText(file);
+      e.target.value = "";
+    });
+    $("#gradeExport").addEventListener("click", exportGrades);
+    $("#gradePublish").addEventListener("click", publishFeatured);
     $("#shareBtn").addEventListener("click", copyShareLinks);
     $("#pickClearBtn").addEventListener("click", clearPicks);
     $("#pickOnlyBtn").addEventListener("click", togglePickedOnly);
@@ -985,10 +1144,18 @@
 
     try {
       loadPicks();
+      state.grades = loadGrades();
+      const gp = new URLSearchParams(location.search);
+      // You're the grader if you hold grades locally, or opened ?grade / ?admin=1.
+      state.grader = Object.keys(state.grades).length > 0 || gp.has("grade") || gp.get("admin") === "1";
       state.films = await LCF.loadFilms();
       state.awards = await LCF.loadAwards().catch(() => []);
       prunePicks();   // forget any picks whose film no longer exists
       applySectorFromURL();   // ?sector=… → clean external sector page
+      if (graderMode()) {
+        document.body.classList.add("grader");
+        const gt = $("#graderTools"); if (gt) gt.hidden = false;
+      }
       render();
     } catch (e) {
       $("#grid").innerHTML =

@@ -208,6 +208,29 @@ LCF.updateFilm = async function (id, patch) {
   return arr[i];
 };
 
+// Publish the score-free "featured + order" signal that drives the public
+// pages. IMPORTANT: this NEVER sends star scores — only a featured boolean and
+// a rank integer, which are safe to be publicly readable. Bulk upsert by id.
+LCF.publishFeatured = async function (rows) {
+  if (!LCF.hasSupabase()) throw new Error("Publishing needs the shared database.");
+  const res = await fetch(LCF.config.SUPABASE_URL + "/rest/v1/films?on_conflict=id", {
+    method: "POST",
+    headers: {
+      apikey: LCF.config.SUPABASE_ANON_KEY,
+      Authorization: "Bearer " + LCF.config.SUPABASE_ANON_KEY,
+      "Content-Type": "application/json",
+      Prefer: "resolution=merge-duplicates,return=minimal",
+    },
+    body: JSON.stringify(rows),
+  });
+  if (!res.ok) {
+    const t = await res.text().catch(() => "");
+    throw new Error(
+      "Publish failed (" + res.status + "). Add the featured/rank columns first. " + t.slice(0, 120)
+    );
+  }
+};
+
 // Ask the secure Edge Function which Vimeo videos aren't in the library yet.
 LCF.scanVimeo = async function (knownIds) {
   if (!LCF.hasSupabase())
