@@ -351,10 +351,8 @@ body {
 .player-chip { font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 2px 9px; }
 
 /* Shareable external sector page — ?sector=Healthcare, linked from the deck.
-   Strips the filter/search/admin chrome down to a clean sector reel. */
-.sector-hero { padding: 30px 20px 10px; }
-.sector-title { margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.01em; }
-.sector-count { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
+   Sector name sits top-right in the header; the grid fills the whole page. */
+.sector-badge { font-size: 15px; font-weight: 600; letter-spacing: 0.2px; color: var(--text); }
 body.sector-page .filters,
 body.sector-page #search,
 body.sector-page #cabinetBtn,
@@ -362,6 +360,19 @@ body.sector-page #scanBtn,
 body.sector-page .c-copy,
 body.sector-page .c-pick,
 body.sector-page #editFilm { display: none !important; }
+body.sector-page main { padding: 0; margin: 0; }
+
+/* Justified fill grid: rows + cards grow to fill the page; tidy even when few. */
+.grid.sector-fill {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sec-gap, 8px);
+  padding: var(--sec-gap, 8px);
+}
+.grid.sector-fill .sector-row { display: flex; gap: var(--sec-gap, 8px); min-height: 0; }
+.grid.sector-fill.fit .sector-row { flex: 1 1 0; }
+.grid.sector-fill .card { flex: 1 1 0; min-width: 0; height: 100%; aspect-ratio: auto; border-radius: 6px; }
 
 /* Player-modal award summary */
 .player-awards { padding: 0 20px 18px; border-top: 1px solid var(--line); margin-top: 2px; padding-top: 14px; }

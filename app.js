@@ -429,10 +429,6 @@
 
     $("#empty").hidden = list.length !== 0;
     $("#count").textContent = "Showing " + list.length + " of " + state.films.length;
-    if (state.sectorPage) {
-      const sc = $("#sectorCount");
-      if (sc) sc.textContent = list.length + " film" + (list.length === 1 ? "" : "s");
-    }
     const anyFilter =
       FILTER_GROUPS.some((g) => state.selected[g.key].size) || state.search;
     $("#clearBtn").hidden = !anyFilter;
@@ -459,6 +455,7 @@
   }
 
   function render() {
+    if (state.sectorPage) { renderSectorGrid(); return; }
     renderChips();
     renderGrid();
   }
@@ -481,12 +478,80 @@
     state.sectorPage = match;
     state.selected.sectors = new Set([wantKey]);
     document.body.classList.add("sector-page");
-    const title = $("#sectorTitle");
-    if (title) title.textContent = match;
-    const hero = $("#sectorHero");
-    if (hero) hero.hidden = false;
+    const badge = $("#sectorBadge");
+    if (badge) { badge.textContent = match; badge.hidden = false; }
     document.title = match + " — Little Crush Films";
     return true;
+  }
+
+  // A single sector card (no pick/copy affordances — this is an external view).
+  function buildSectorCard(f) {
+    const card = document.createElement("div");
+    card.className = "card";
+    const dur = fmtDuration(f.duration);
+    const nAw = awardsForFilm(f.id).length;
+    card.innerHTML =
+      (f.thumbnail
+        ? '<img loading="lazy" src="' + esc(f.thumbnail) + '" alt="' + esc(f.film) + '" />'
+        : '<div class="noimg">' + esc(clientLabel(f) + " — " + f.film) + "</div>") +
+      (dur ? '<span class="c-dur">' + dur + "</span>" : "") +
+      (nAw ? '<span class="c-awards" title="' + nAw + ' awards">🏆 ' + nAw + "</span>" : "") +
+      '<div class="c-play"></div>' +
+      '<div class="overlay">' +
+      '<div class="c-client">' + esc(clientLabel(f)) + "</div>" +
+      '<div class="c-film">' + esc(f.film) + "</div>" +
+      "</div>";
+    card.addEventListener("click", () => openPlayer(f));
+    return card;
+  }
+
+  // Lay the sector's films out as a justified grid that fills the page: however
+  // few there are, pick a row count whose cells sit closest to 16:9, split the
+  // films evenly across those rows (fuller rows on top), and let each row + card
+  // grow to fill. Small sectors fill one screen exactly; large ones keep a sane
+  // minimum card height and scroll.
+  function renderSectorGrid() {
+    const grid = $("#grid");
+    const list = filtered();
+    grid.className = "grid sector-fill";
+    grid.classList.remove("fit");
+    grid.style.height = "";
+    const n = list.length;
+    $("#empty").hidden = n !== 0;
+    grid.innerHTML = "";
+    if (!n) return;
+
+    const topbar = document.querySelector(".topbar");
+    const headerH = topbar ? topbar.offsetHeight : 0;
+    const GAP = 8, MIN_ROW = 150;
+    const vh = Math.max(window.innerHeight - headerH, 240);
+    const vw = grid.clientWidth || window.innerWidth;
+
+    let rows = 1, best = Infinity;
+    for (let r = 1; r <= n; r++) {
+      const cols = Math.ceil(n / r);
+      const cellW = (vw - GAP * (cols - 1)) / cols;
+      const cellH = (vh - GAP * (r - 1)) / r;
+      if (cellW <= 0 || cellH <= 0) continue;
+      const score = Math.abs(Math.log((cellW / cellH) / (16 / 9)));
+      if (score < best) { best = score; rows = r; }
+    }
+    const rowH = (vh - GAP * (rows - 1)) / rows;
+    const fits = rowH >= MIN_ROW;
+
+    grid.style.setProperty("--sec-gap", GAP + "px");
+    if (fits) { grid.classList.add("fit"); grid.style.height = vh + "px"; }
+
+    const base = Math.floor(n / rows), rem = n % rows;
+    let idx = 0;
+    for (let r = 0; r < rows; r++) {
+      const cnt = base + (r < rem ? 1 : 0);
+      const row = document.createElement("div");
+      row.className = "sector-row";
+      if (!fits) row.style.height = MIN_ROW + "px";
+      for (let k = 0; k < cnt && idx < n; k++) row.appendChild(buildSectorCard(list[idx++]));
+      grid.appendChild(row);
+    }
   }
 
   function clearFilters() {
@@ -905,6 +970,12 @@
         hideModal("#cabinetModal");
         hideModal("#awardsModal");
       }
+    });
+    let _rz;
+    window.addEventListener("resize", () => {
+      if (!state.sectorPage) return;
+      clearTimeout(_rz);
+      _rz = setTimeout(renderSectorGrid, 150);
     });
 
     try {
