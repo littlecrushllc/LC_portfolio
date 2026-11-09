@@ -465,18 +465,23 @@
   // sector page: just that sector's films, no filter chrome. Linked from the
   // capabilities deck. "sector" or the short "s" both work; matching is
   // case-insensitive against the films' own sector values.
+  // ?sector=Healthcare  or  ?type=Recruitment Film  → a clean, page-filling
+  // external view of that sector / video type (short aliases ?s= / ?t=).
   function applySectorFromURL() {
     const params = new URLSearchParams(location.search);
-    const want = (params.get("sector") || params.get("s") || "").trim();
+    const typeWant = (params.get("type") || params.get("t") || "").trim();
+    const want = (typeWant || params.get("sector") || params.get("s") || "").trim();
     if (!want) return false;
+    const group = typeWant ? "videoTypes" : "sectors";
     const wantKey = LCF.canonKey(want);
     let match = want;
     for (const f of state.films) {
-      const hit = (f.sectors || []).find((s) => LCF.canonKey(s) === wantKey);
+      const vals = (group === "videoTypes" ? f.videoTypes : f.sectors) || [];
+      const hit = vals.find((v) => LCF.canonKey(v) === wantKey);
       if (hit) { match = hit; break; }
     }
     state.sectorPage = match;
-    state.selected.sectors = new Set([wantKey]);
+    state.selected[group] = new Set([wantKey]);
     document.body.classList.add("sector-page");
     const badge = $("#sectorBadge");
     if (badge) { badge.textContent = match; badge.hidden = false; }
