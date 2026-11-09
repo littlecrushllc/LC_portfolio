@@ -147,6 +147,25 @@
     return out.join("\n");
   }
 
+  // Description + criteria chips shown under the title in the player modal.
+  // The description is the film's Vimeo description (synced into catalog.json /
+  // the films table); chips are its sectors + video types. All understated.
+  function renderPlayerSub(f) {
+    const sub = $("#playerSub");
+    if (!sub) return;
+    const desc = (f.description || "").trim();
+    const chips = [].concat(f.sectors || [], f.videoTypes || []).filter(Boolean);
+    let html = "";
+    if (desc) html += '<p class="player-desc">' + esc(desc) + "</p>";
+    if (chips.length)
+      html +=
+        '<div class="player-chips">' +
+        chips.map((c) => '<span class="player-chip">' + esc(c) + "</span>").join("") +
+        "</div>";
+    sub.innerHTML = html;
+    sub.hidden = !html;
+  }
+
   // The award summary shown under a film in the player modal.
   function renderPlayerAwards(f) {
     const box = $("#playerAwards");
@@ -454,6 +473,7 @@
     $("#playerFilm").textContent = f.film;
     $("#copyLink").onclick = () => copyLink(f.vimeoUrl);
     $("#editFilm").onclick = () => openEditor(f);
+    renderPlayerSub(f);
     renderPlayerAwards(f);
     showModal("#playerModal");
   }
