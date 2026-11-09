@@ -25,6 +25,7 @@
     search: "",
     picked: new Set(),   // film ids hand-picked for a custom, targeted share
     pickedOnly: false,   // "Selected only" review view — show just the picks
+    sectorPage: null,    // a sector name when the page is a shareable sector view
   };
 
   // ---- hand-picked selection (persists across filters, and across reloads) --------
@@ -428,6 +429,10 @@
 
     $("#empty").hidden = list.length !== 0;
     $("#count").textContent = "Showing " + list.length + " of " + state.films.length;
+    if (state.sectorPage) {
+      const sc = $("#sectorCount");
+      if (sc) sc.textContent = list.length + " film" + (list.length === 1 ? "" : "s");
+    }
     const anyFilter =
       FILTER_GROUPS.some((g) => state.selected[g.key].size) || state.search;
     $("#clearBtn").hidden = !anyFilter;
@@ -456,6 +461,32 @@
   function render() {
     renderChips();
     renderGrid();
+  }
+
+  // ---- shareable sector pages ---------------------------------------------------
+  // A URL like  ?sector=Healthcare  turns the library into a clean, external
+  // sector page: just that sector's films, no filter chrome. Linked from the
+  // capabilities deck. "sector" or the short "s" both work; matching is
+  // case-insensitive against the films' own sector values.
+  function applySectorFromURL() {
+    const params = new URLSearchParams(location.search);
+    const want = (params.get("sector") || params.get("s") || "").trim();
+    if (!want) return false;
+    const wantKey = LCF.canonKey(want);
+    let match = want;
+    for (const f of state.films) {
+      const hit = (f.sectors || []).find((s) => LCF.canonKey(s) === wantKey);
+      if (hit) { match = hit; break; }
+    }
+    state.sectorPage = match;
+    state.selected.sectors = new Set([wantKey]);
+    document.body.classList.add("sector-page");
+    const title = $("#sectorTitle");
+    if (title) title.textContent = match;
+    const hero = $("#sectorHero");
+    if (hero) hero.hidden = false;
+    document.title = match + " — Little Crush Films";
+    return true;
   }
 
   function clearFilters() {
@@ -881,6 +912,7 @@
       state.films = await LCF.loadFilms();
       state.awards = await LCF.loadAwards().catch(() => []);
       prunePicks();   // forget any picks whose film no longer exists
+      applySectorFromURL();   // ?sector=… → clean external sector page
       render();
     } catch (e) {
       $("#grid").innerHTML =

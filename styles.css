@@ -350,6 +350,19 @@ body {
 .player-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; }
 .player-chip { font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 2px 9px; }
 
+/* Shareable external sector page — ?sector=Healthcare, linked from the deck.
+   Strips the filter/search/admin chrome down to a clean sector reel. */
+.sector-hero { padding: 30px 20px 10px; }
+.sector-title { margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.01em; }
+.sector-count { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
+body.sector-page .filters,
+body.sector-page #search,
+body.sector-page #cabinetBtn,
+body.sector-page #scanBtn,
+body.sector-page .c-copy,
+body.sector-page .c-pick,
+body.sector-page #editFilm { display: none !important; }
+
 /* Player-modal award summary */
 .player-awards { padding: 0 20px 18px; border-top: 1px solid var(--line); margin-top: 2px; padding-top: 14px; }
 .pa-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
