@@ -201,10 +201,13 @@ const IBR_ROWS = [
   ['PR Daily Awards','FINALIST: Long-Form Video'],
   ['Branded Content Awards (Native Advertising Institute)','SILVER: Best B2B Campaign (U.S.)'],
   ['Branded Content Awards (Native Advertising Institute)','FINALIST: Best Sustainability Program (Global)'],
+  ['The Lovie Awards','BRONZE: Video & Film: Sustainability & Environment','https://winners.lovieawards.com/categories/details/2026/video-film/general-video-film/sustainability-environment/#w394688'],
+  ['The Lovie Awards','BRONZE: Advertising, Media & PR: Branded Content: Products & Services','https://winners.lovieawards.com/categories/details/2026/advertising-media-pr/branded-content/products-services/#w394689'],
 ];
-const IBR = IBR_ROWS.map(([body, title]) => ({ source:'lc', year:2026, month:null, title, award_body: body,
+// 3rd element (optional) = the public winner URL.
+const IBR = IBR_ROWS.map(([body, title, url=null]) => ({ source:'lc', year:2026, month:null, title, award_body: body,
   tier: tierOf(title), client:'Iberdrola', associated_with:null, film_label:'Iberdrola — Staying Power',
-  film_ids: IBR_ids, note:null, url:null }));
+  film_ids: IBR_ids, note:null, url }));
 
 const all = [...LC, ...CAR, ...IBR];
 fs.writeFileSync(new URL('./awards.json', import.meta.url), JSON.stringify({ awards: all }, null, 2));

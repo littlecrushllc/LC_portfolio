@@ -2097,6 +2097,40 @@
       ],
       "note": null,
       "url": null
+    },
+    {
+      "source": "lc",
+      "year": 2026,
+      "month": null,
+      "title": "BRONZE: Video & Film: Sustainability & Environment",
+      "award_body": "The Lovie Awards",
+      "tier": "Bronze",
+      "client": "Iberdrola",
+      "associated_with": null,
+      "film_label": "Iberdrola — Staying Power",
+      "film_ids": [
+        "1109092069",
+        "1208763075"
+      ],
+      "note": null,
+      "url": "https://winners.lovieawards.com/categories/details/2026/video-film/general-video-film/sustainability-environment/#w394688"
+    },
+    {
+      "source": "lc",
+      "year": 2026,
+      "month": null,
+      "title": "BRONZE: Advertising, Media & PR: Branded Content: Products & Services",
+      "award_body": "The Lovie Awards",
+      "tier": "Bronze",
+      "client": "Iberdrola",
+      "associated_with": null,
+      "film_label": "Iberdrola — Staying Power",
+      "film_ids": [
+        "1109092069",
+        "1208763075"
+      ],
+      "note": null,
+      "url": "https://winners.lovieawards.com/categories/details/2026/advertising-media-pr/branded-content/products-services/#w394689"
     }
   ]
 }
