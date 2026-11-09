@@ -981,6 +981,25 @@
     $("#addThumb").style.visibility = f.thumbnail ? "visible" : "hidden";
     $("#addFilm").value = f.title || "";
     renderEditGrade(f.id);
+    // Auto-pull the Vimeo description so a new film arrives with its copy already
+    // filled in. oEmbed returns it even for private/hash links. Fire-and-forget,
+    // and guarded so a slow fetch can't overwrite the next film in the queue or
+    // anything you've typed.
+    const descEl = $("#addDesc");
+    if (descEl) {
+      descEl.value = f.description || "";
+      if (!descEl.value.trim()) {
+        const forId = f.id, prev = descEl.placeholder;
+        descEl.placeholder = "Fetching description from Vimeo…";
+        LCF.fetchVimeoMeta(f.vimeoUrl)
+          .then((m) => {
+            if (pendingMeta && pendingMeta.id === forId && !descEl.value.trim())
+              descEl.value = m.description || "";
+          })
+          .catch(() => {})
+          .finally(() => { if (pendingMeta && pendingMeta.id === forId) descEl.placeholder = prev; });
+      }
+    }
     $("#addPreview").hidden = false;
     $("#addError").hidden = true;
     $("#saveFilm").disabled = false;

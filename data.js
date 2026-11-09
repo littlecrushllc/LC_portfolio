@@ -63,6 +63,7 @@ LCF.fetchVimeoMeta = async function (vimeoUrl) {
     vimeoUrl: vimeoUrl.trim(),
     playerUrl: LCF.playerUrl(id, hash),
     title: d.title || "",
+    description: (d.description || "").trim(),
     thumbnail: LCF.hiRes(d.thumbnail_url || ""),
     duration: d.duration || null,
   };
