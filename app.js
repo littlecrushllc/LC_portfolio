@@ -616,6 +616,7 @@
     $("#addTitle").textContent = "Add a film";
     $("#saveFilm").textContent = "Save film";
     $("#refreshThumb").hidden = true;
+    const dEl = $("#addDesc"); if (dEl) dEl.value = "";
   }
 
   // ---- Scan Vimeo ----------------------------------------------------------------
@@ -708,6 +709,7 @@
     $("#addThumb").src = f.thumbnail || "";
     $("#addThumb").style.visibility = f.thumbnail ? "visible" : "hidden";
     $("#addFilm").value = f.film || "";
+    { const dEl = $("#addDesc"); if (dEl) dEl.value = f.description || ""; }
     $("#addPreview").hidden = false;
     $("#addError").hidden = true;
     $("#saveFilm").disabled = false;
@@ -753,9 +755,11 @@
       const film = $("#addFilm").value.trim();
       const sectors = [...addSel.sectors];
       const videoTypes = [...addSel.videoTypes];
+      const descEl = $("#addDesc");
+      const description = descEl ? descEl.value.trim() : "";
 
       if (editingId) {
-        await LCF.updateFilm(editingId, { clients, film, sectors, videoTypes });
+        await LCF.updateFilm(editingId, { clients, film, sectors, videoTypes, description });
         state.films = await LCF.loadFilms();
         render();
         hideModal("#addModal");
@@ -773,6 +777,7 @@
         vimeoUrl: pendingMeta.vimeoUrl,
         playerUrl: pendingMeta.playerUrl,
         title: pendingMeta.title,
+        description,
         thumbnail: pendingMeta.thumbnail,
         duration: pendingMeta.duration,
       };

@@ -274,6 +274,7 @@ body {
 .add-hint { margin: 0 0 18px; color: var(--muted); font-size: 13px; }
 .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; font-size: 13px; color: var(--muted); }
 .field input,
+.field textarea,
 .field select {
   background: var(--panel-2);
   border: 1px solid var(--line);

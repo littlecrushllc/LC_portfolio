@@ -11,10 +11,14 @@ create table if not exists films (
   "vimeoUrl"  text,                        -- private share link (Copy-link button)
   "playerUrl" text,                        -- embed player url
   title       text,
+  description text,                        -- the Vimeo description, shown on the player
   thumbnail   text,
   duration    int,
   created_at  timestamptz default now()
 );
+
+-- Back-fill for existing databases (no-op if the column already exists).
+alter table films add column if not exists description text;
 
 -- Row Level Security: internal tool, so allow read + write via the public anon key.
 alter table films enable row level security;
