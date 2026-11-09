@@ -277,23 +277,32 @@
     sub.hidden = !html;
   }
 
-  // Private star grader in the player — only in the internal tool, never public.
+  // Grades NEVER appear on the player. The only surfaces a client can reach are
+  // the player and Vimeo, so grading lives solely in the Edit panel (renderEditGrade).
   function renderPlayerGrade(f) {
     const box = $("#playerGrade");
+    if (box) { box.hidden = true; box.innerHTML = ""; }
+  }
+
+  // Editable 5-star grade inside the Edit / Add-film panel. Internal only —
+  // stored per film id in localStorage, never written to the DB or shown publicly.
+  function renderEditGrade(id) {
+    const box = $("#editGrade");
     if (!box) return;
-    if (!graderMode()) { box.hidden = true; box.innerHTML = ""; return; }
-    const g = gradeOf(f.id);
-    let html = '<span class="pg-label">Grade</span><span class="pg-stars">';
+    const g = gradeOf(id);
+    let html = '<span class="eg-stars">';
     for (let s = 1; s <= 5; s++)
-      html += '<button class="pg-star' + (s <= g ? " on" : "") + '" data-s="' + s + '" aria-label="' + s + ' star">★</button>';
-    html += "</span>" + (g ? '<button class="pg-clear">clear</button>' : '<span class="pg-hint">not graded</span>');
+      html += '<button type="button" class="eg-star' + (s <= g ? " on" : "") +
+              '" data-s="' + s + '" aria-label="' + s + ' star">★</button>';
+    html += "</span>" + (g
+      ? '<button type="button" class="eg-clear">clear</button>'
+      : '<span class="eg-hint">not graded</span>');
     box.innerHTML = html;
-    box.hidden = false;
-    box.querySelectorAll(".pg-star").forEach((btn) => {
-      btn.onclick = () => { const s = +btn.dataset.s; setGrade(f.id, s === gradeOf(f.id) ? 0 : s); renderPlayerGrade(f); };
+    box.querySelectorAll(".eg-star").forEach((btn) => {
+      btn.onclick = () => { const s = +btn.dataset.s; setGrade(id, s === gradeOf(id) ? 0 : s); renderEditGrade(id); };
     });
-    const clr = box.querySelector(".pg-clear");
-    if (clr) clr.onclick = () => { setGrade(f.id, 0); renderPlayerGrade(f); };
+    const clr = box.querySelector(".eg-clear");
+    if (clr) clr.onclick = () => { setGrade(id, 0); renderEditGrade(id); };
   }
 
   // The award summary shown under a film in the player modal.
@@ -912,6 +921,7 @@
     $("#addThumb").src = f.thumbnail || "";
     $("#addThumb").style.visibility = f.thumbnail ? "visible" : "hidden";
     $("#addFilm").value = f.title || "";
+    renderEditGrade(f.id);
     $("#addPreview").hidden = false;
     $("#addError").hidden = true;
     $("#saveFilm").disabled = false;
@@ -961,6 +971,7 @@
     $("#addThumb").style.visibility = f.thumbnail ? "visible" : "hidden";
     $("#addFilm").value = f.film || "";
     { const dEl = $("#addDesc"); if (dEl) dEl.value = f.description || ""; }
+    renderEditGrade(f.id);
     $("#addPreview").hidden = false;
     $("#addError").hidden = true;
     $("#saveFilm").disabled = false;
@@ -1145,13 +1156,13 @@
     try {
       loadPicks();
       state.grades = loadGrades();
-      const gp = new URLSearchParams(location.search);
-      // You're the grader if you hold grades locally, or opened ?grade / ?admin=1.
-      state.grader = Object.keys(state.grades).length > 0 || gp.has("grade") || gp.get("admin") === "1";
       state.films = await LCF.loadFilms();
       state.awards = await LCF.loadAwards().catch(() => []);
       prunePicks();   // forget any picks whose film no longer exists
       applySectorFromURL();   // ?sector=… → clean external sector page
+      // The main library is our internal tool (grading + featured controls); the
+      // external sector/type pages never are. No ?grade needed to grade any more.
+      state.grader = !state.sectorPage;
       if (graderMode()) {
         document.body.classList.add("grader");
         const gt = $("#graderTools"); if (gt) gt.hidden = false;
